@@ -1,0 +1,15 @@
+{
+  "name": "database-jamac",
+  "version": "1.0.0",
+  "description": "JAMAC question database.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Albemarle High School Math Club",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^11.0.2"
+  }
+}
