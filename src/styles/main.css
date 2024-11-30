@@ -1,2 +1,188 @@
 /* rgb(88, 88, 183) blue
 rgb(211, 79, 79) red */
+
+/* General styling */
+
+html {
+    font-family: 'Heebo', "Trebuchet MS", sans-serif;
+    scroll-behavior: smooth;
+    hyphens: auto;
+}
+
+body {
+    margin: 0;
+}
+
+main {
+    padding-inline: calc(2rem + 5vw);
+    padding-bottom: 2em;
+}
+
+a:link {
+    color: rgb(88, 88, 183);
+}
+
+a:visited {
+    color: purple;
+}
+
+nav *:focus {
+    border-radius: 2px;
+    outline: 2px solid black;
+}
+
+footer *:focus {
+    outline: 2px solid white;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    color: red;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 4em;
+}
+
+h2 {
+    font-size: 1.7em;
+}
+
+h3 {
+    font-size: 1.4em;
+}
+
+h4 {
+    font-size: 1.2em;
+}
+
+h5 {
+    font-size: 1.1em;
+}
+
+@media screen and (max-width: 680px) {
+
+    h1 {
+        font-size: 3em;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    h3 {
+        font-size: 1.2em;
+    }
+    
+    h4 {
+        font-size: 1.1em;
+    }
+    
+    h5 {
+        font-size: 1em;
+    }
+
+    p {
+        font-size: 0.9em;
+    }
+
+}
+
+/* Header (Nav bar, logo, menu button) */
+
+header {
+    z-index: 100;
+    background: white;
+    position: sticky;
+    top: 0;
+    margin: -0.5rem 0 0;
+    width: 100vw;
+    max-width: 100%;
+    border-bottom: 2px solid #ececec;
+}
+
+nav {
+    min-height: 4rem;
+    display: grid;
+    grid-template-areas:
+            "logo log-in-button";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(5rem, max-content);
+}
+
+nav *:focus {
+    outline: 2px solid black;
+    border-radius: 0.5rem;
+}
+
+.logo {
+    margin: auto 1vw;
+    grid-area: logo;
+    width: fit-content;
+}
+
+.logo img {
+    display: block;
+    width: 100px;
+}
+
+/* Log in button */
+
+@property --leftSide {
+    syntax: '<color>';
+    initial-value: rgb(211, 79, 79);
+    inherits: false;
+}
+
+@property --rightSide {
+    syntax: '<color>';
+    initial-value: rgb(211, 79, 79);
+    inherits: false;
+}
+
+#log-in-button {
+    color: white;
+    font-size: large;
+
+    padding: 1rem 2rem;
+    grid-area: log-in-button;
+    justify-self: right;
+    display: inline-block;
+    margin: auto 5vw;
+
+    background: linear-gradient(0.25turn, var(--leftSide), var(--rightSide));
+    border: none;
+    border-radius: 0.4rem;
+
+    cursor: pointer;
+
+    transition:
+        --leftSide 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        --rightSide 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+#log-in-button:hover {
+    --leftSide: rgb(88, 88, 183);
+}
+
+#log-in-button:active {
+    --leftSide: rgb(88, 88, 183);
+    --rightSide: rgb(88, 88, 183);
+}
+
+/* Footer */
+
+footer {
+    background-color: rgb(84, 84, 84);
+    color: white;
+    padding-block: 1em;
+    padding-inline: 2em;
+}
+
+footer a {
+    color: white !important;
+}
