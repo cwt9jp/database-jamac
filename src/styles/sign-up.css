@@ -1,0 +1,25 @@
+@import url(/src/styles/default.css) layer(default);
+
+#logo {
+    display: block;
+    margin: auto;
+    width: min(30vw, 150px);
+}
+
+/* Sign in box (main) */
+
+main {
+    display: block;
+    margin: 20px auto;
+    width: min(50vw, 500px);
+    padding: 25px;
+
+    border-radius: 10px;
+    background-color: rgb(235, 235, 235);
+    
+    text-align: center;
+}
+
+main h1 {
+    font-size: 1.5em;
+}
