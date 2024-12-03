@@ -16,10 +16,31 @@ main {
 
     border-radius: 10px;
     background-color: rgb(235, 235, 235);
-    
     text-align: center;
+    
 }
 
-main h1 {
+form h1 {
     font-size: 1.5em;
+    margin-bottom: 30px;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    font-size: 100%;
+    width: min(35vw, 350px);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+input {
+    height: min(10vh, 50px);
+}
+
+label {
+    position: absolute;
 }

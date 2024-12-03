@@ -21,7 +21,19 @@
         </header>
         <main>
             <form>
-                <label for="email"></label>
+                <h1>Sign up</h1>
+                <p>
+                    <label for="email">Email<span aria-label="required">*</span></label>
+                    <input type="email" id="email" name="user-email" required />
+                </p>
+                <p>
+                    <label for="password-initial">Password<span aria-label="required">*</span></label>
+                    <input type="password" id="password-initial" name="password-initial" required/>
+                </p>
+                <p>
+                    <label for="password-final">Retype your password<span aria-label="required">*</span></label>
+                    <input type="password" id="password-final" name="password-final" required/>
+                </p>
             </form>
         </main>
         <footer>
