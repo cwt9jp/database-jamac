@@ -11,7 +11,7 @@
 main {
     display: block;
     margin: 20px auto;
-    width: min(50vw, 500px);
+    width: min(40vw, 400px);
     padding: 25px;
 
     border-radius: 10px;
@@ -31,7 +31,7 @@ select,
 textarea {
     font-family: inherit;
     font-size: 100%;
-    width: min(35vw, 350px);
+    width: min(25vw, 250px);
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -39,8 +39,29 @@ textarea {
 
 input {
     height: min(10vh, 50px);
+    border-radius: 10px;
+    border: 2px solid rgb(88, 88, 183);
+    transition: border 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+    padding-inline: 10px;
+}
+
+input:focus {
+    outline: none;
+    border: 2px solid rgb(211, 79, 79);
+}
+
+form p {
+    position: relative;
+    display: inline-block;
 }
 
 label {
     position: absolute;
+    top: 30%;
+    left: 20px;
+    transition: 
+        top 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        left 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        bottom 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        right 0.2s cubic-bezier(0.37, 0, 0.63, 1);
 }
