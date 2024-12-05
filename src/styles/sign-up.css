@@ -13,15 +13,12 @@ main {
     margin: 20px auto;
     width: min(40vw, 400px);
     padding: 25px;
-
-    border-radius: 10px;
-    background-color: rgb(235, 235, 235);
     text-align: center;
     
 }
 
 form h1 {
-    font-size: 1.5em;
+    font-size: 2.5em;
     margin-bottom: 30px;
 }
 
@@ -40,25 +37,34 @@ textarea {
 input {
     height: min(10vh, 50px);
     border-radius: 10px;
-    border: 2px solid rgb(88, 88, 183);
+    border: 1px solid rgb(109, 109, 109);
     transition: border 0.2s cubic-bezier(0.37, 0, 0.63, 1);
-    padding-inline: 10px;
+    padding-inline: min(1.5vw, 15px);
 }
 
 input:focus {
     outline: none;
-    border: 2px solid rgb(211, 79, 79);
+    border: 1px solid rgb(211, 79, 79);
 }
 
 form p {
     position: relative;
     display: inline-block;
+    margin: 10px;
 }
 
 label {
+    color: rgb(109, 109, 109);
+
     position: absolute;
     top: 30%;
     left: 20px;
+    z-index: 1;
+
+    background-color: white;
+
+    cursor: text;
+
     transition: 
         top 0.2s cubic-bezier(0.37, 0, 0.63, 1),
         left 0.2s cubic-bezier(0.37, 0, 0.63, 1),
