@@ -1,7 +1,7 @@
-let labels = Array.from(document.querySelectorAll("label"));
+const labels = Array.from(document.querySelectorAll("label"));
 
 labels.forEach(function(lbl) {
-    let input = document.getElementById(lbl.htmlFor);
+    const input = document.getElementById(lbl.htmlFor);
 
     if (input) {
         input.addEventListener("focus", function() {

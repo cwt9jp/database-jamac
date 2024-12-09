@@ -1,8 +1,11 @@
 @import url(/src/styles/default.css) layer(default);
 
-#logo {
-    display: block;
-    margin: auto;
+header {
+    display: flex;
+    justify-content: center;
+}
+
+#logo img {
     width: min(30vw, 150px);
 }
 
@@ -82,6 +85,60 @@ label.entered {
     font-size: 0.8em;
 }
 
-hr {
-    margin: 20px;
+button {
+    height: min(10vh, 50px);
+    padding-inline: min(1.5vw, 15px);
+
+    border-radius: 10px;
+    border: 1px solid rgb(109, 109, 109);
+    background-color: white;
+
+    cursor: pointer;
+
+    transition: background-color 0.15s ease-in-out;
+}
+
+button:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+button:active {
+    background-color: rgb(231, 231, 231);
+}
+
+#error-message {
+    color: red;
+}
+
+/* Section break */
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-block: 20px;
+  }
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #000;
+}
+
+.separator:not(:empty)::before {
+    margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+    margin-left: .25em;
+}
+
+/* Sign in with Google */
+
+.sign-in-google {
+    display: flex;
+    margin-inline: auto;
+    align-items: center;
+    gap: 10px;
 }

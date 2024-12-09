@@ -11,16 +11,19 @@
 
         <link type="text/css" rel="stylesheet" href="/src/styles/sign-up.css" />
 
-        <script type="module" src="/src/scripts/sign-in-up.js"></script>
+        <script type="module" src="/src/scripts/sign-in-up-style.js"></script>
+        <script type="module" src="/src/scripts/sign-up.js"></script>
 
         <link rel="icon" href="/src/images/icon.ico" type="image/x-icon">
     </head>
     <body>
         <header>
-            <img src="/src/images/djp-logo.svg" id="logo"/>
+            <a href="/" id="logo">
+                <img src="/src/images/djp-logo.svg" />
+            </a>
         </header>
         <main>
-            <form>
+            <form id="sign-up-form" novalidate>
                 <h1>Sign up</h1>
                 <p>
                     <label for="email">Email<span aria-label="required">*</span></label>
@@ -28,20 +31,27 @@
                 </p>
                 <p>
                     <label for="password-initial">Password<span aria-label="required">*</span></label>
-                    <input type="password" id="password-initial" name="password-initial" required/>
+                    <input type="password" id="password-initial" name="password-initial" required minlength="6" maxlength="4096" />
                 </p>
                 <p>
                     <label for="password-final">Retype your password<span aria-label="required">*</span></label>
-                    <input type="password" id="password-final" name="password-final" required/>
+                    <input type="password" id="password-final" name="password-final" required minlength="6" maxlength="4096" />
                 </p>
-                <hr />
-                <button type="button">Sign in with Google</button>
+                <p>
+                    <button type="button" id="submit">Sign up</button>
+                </p>
+                <br />
+                <p id="error-message"></p>
+
+                <div class="separator">Or</div>
+
+                <p>
+                    <button type="button" class="sign-in-google">
+                        <img src="/src/images/google-logo.svg" />
+                        <p>Sign in with Google</p>
+                    </button>
+                </p>
             </form>
         </main>
-        <footer>
-            <p>
-                &copy; 2024 Albemarle Math Club. Use of problems is allowed under the <a target="_blank" rel="noopener" href="https://opensource.org/license/mit">MIT License</a>.
-            </p>
-        </footer>
     </body>
 </html>
