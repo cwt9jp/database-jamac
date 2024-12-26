@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-import { getAuth, connectAuthEmulator, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getAuth, connectAuthEmulator, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
@@ -16,50 +16,57 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
+// If already signed in: redirect user
+const auth = getAuth();
+connectAuthEmulator(auth, "http://127.0.0.1:9099");
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        window.location.href = '/';
+    }
+});
+
 // Email validation
 const emailInput = document.getElementById("email");
+const nameInput = document.getElementById("display-name");
 const initialPassword = document.getElementById("password-initial");
 const finalPassword = document.getElementById("password-final");
 const signUp = document.getElementById("submit");
-const error = document.getElementById("error-message");
+const errorMessageElement = document.getElementById("error-message");
 
 const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 
 signUp.addEventListener("click", () => {
-    if (emailInput.value.length != 0 && emailRegExp.test(emailInput.value)) {
-        error.textContent = "";
-    }
-    else {
+    errorMessageElement.textContent = "";
+
+    if (!(emailInput.value.length != 0 && emailRegExp.test(emailInput.value))) {
         emailInput.focus();
-        error.textContent = "Please enter a valid email address";
+        errorMessageElement.textContent = "Please enter a valid email address";
         return;
     }
 
-    if (initialPassword.value.length >= 6 && initialPassword.value.length <= 4096) {
-        error.textContent = '';
+    if (!(nameInput.value.length > 0 && nameInput.value.length <= 4096)) {
+        nameInput.focus();
+        errorMessageElement.textContent = "Please enter a display name";
+        return;
     }
-    else {
+
+    if (!(initialPassword.value.length >= 6 && initialPassword.value.length <= 4096)) {
         initialPassword.focus();
-        error.textContent = 'Password must be at least 6 characters';
+        errorMessageElement.textContent = 'Password must be at least 6 characters';
         return;
     }
 
-    if (finalPassword.value === initialPassword.value) {
-        error.textContent = '';
-    }
-    else {
+    if (!(finalPassword.value === initialPassword.value)) {
         finalPassword.focus();
-        error.textContent = "Passwords do not match";
+        errorMessageElement.textContent = "Passwords do not match";
         return;
     }
 
     // Send email to Firebase
-    const auth = getAuth();
     const email = emailInput.value;
     const password = initialPassword.value;
 
-    connectAuthEmulator(auth, "http://127.0.0.1:9099");
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
         const user = userCredential.user;
@@ -68,7 +75,12 @@ signUp.addEventListener("click", () => {
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        error.textContent = `${errorMessage} (code ${error.code})`;
+        if (errorCode === "auth/email-already-in-use") {
+            errorMessageElement.textContent = "Email is already associated with an account";
+        }
+        else {
+            errorMessageElement.textContent = `Error: ${errorMessage}`;
+        }
     });
 
 });

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>DJP - Sign up</title>
+        <title>DJP - Log in</title>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
         <link type="text/css" rel="stylesheet" href="/src/styles/sign-in-up.css" />
 
         <script type="module" src="/src/scripts/sign-in-up-style.js"></script>
-        <script type="module" src="/src/scripts/sign-up.js"></script>
+        <script type="module" src="/src/scripts/log-in.js"></script>
 
         <link rel="icon" href="/src/images/icon.ico" type="image/x-icon">
     </head>
@@ -23,26 +23,18 @@
             </a>
         </header>
         <main>
-            <form id="sign-up-form" novalidate>
-                <h1>Sign up</h1>
+            <form id="log-in-form" novalidate>
+                <h1>Log in</h1>
                 <p>
                     <label for="email">Email<span aria-label="required">*</span></label>
-                    <input type="email" id="email" name="user-email" required autocomplete="email" />
+                    <input type="email" id="email" name="user-email" required autocomplete="email"/>
                 </p>
                 <p>
-                    <label for="display-name">Display name<span aria-label="required">*</span></label>
-                    <input type="text" id="display-name" name="display-name" required maxlength="4096" />
+                    <label for="password">Password<span aria-label="required">*</span></label>
+                    <input type="password" id="password" name="user-password" required minlength="6" maxlength="4096" />
                 </p>
                 <p>
-                    <label for="password-initial">Password<span aria-label="required">*</span></label>
-                    <input type="password" id="password-initial" name="password-initial" required minlength="6" maxlength="4096" />
-                </p>
-                <p>
-                    <label for="password-final">Retype your password<span aria-label="required">*</span></label>
-                    <input type="password" id="password-final" name="password-final" required minlength="6" maxlength="4096" />
-                </p>
-                <p>
-                    <button type="button" id="submit">Sign up</button>
+                    <button type="button" id="submit">Log in</button>
                 </p>
                 <br />
                 <p id="error-message"></p>
@@ -52,7 +44,7 @@
                 <p>
                     <button type="button" class="sign-in-google">
                         <img src="/src/images/google-logo.svg" />
-                        <p>Sign up with Google</p>
+                        <p>Sign in with Google</p>
                     </button>
                 </p>
             </form>

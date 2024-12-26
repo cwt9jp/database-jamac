@@ -20,9 +20,10 @@ nav {
     min-height: 4rem;
     display: grid;
     grid-template-areas:
-            "logo log-in-button";
+            "logo button";
     grid-template-columns: 1fr 1fr;
     grid-template-rows: minmax(5rem, max-content);
+    padding-right: 5vw;
 }
 
 nav *:focus {
@@ -41,47 +42,83 @@ nav *:focus {
     width: 100px;
 }
 
-/* Log in button */
+/* Log in/Sign up button */
 
-@property --leftSide {
+#button-wrapper {
+    display: flex;
+    justify-self: end;
+    gap: 1vw;
+}
+
+@property --leftSideLogin {
     syntax: '<color>';
     initial-value: rgb(211, 79, 79);
     inherits: false;
 }
 
-@property --rightSide {
+@property --rightSideLogin {
     syntax: '<color>';
     initial-value: rgb(211, 79, 79);
     inherits: false;
 }
 
-#log-in-button {
+@property --leftSideSignUp {
+    syntax: '<color>';
+    initial-value: rgb(88, 88, 183);
+    inherits: false;
+}
+
+@property --rightSideSignUp {
+    syntax: '<color>';
+    initial-value: rgb(88, 88, 183);
+    inherits: false;
+}
+
+#button-wrapper a {
     color: white;
     font-size: large;
     text-decoration: none;
 
     padding: 1rem 2rem;
-    grid-area: log-in-button;
+    grid-area: button;
     justify-self: right;
     display: inline-block;
-    margin: auto 5vw;
+    margin: auto 0;
 
-    background: linear-gradient(0.25turn, var(--leftSide), var(--rightSide));
     border: none;
     border-radius: 0.4rem;
 
     cursor: pointer;
+}
 
+#log-in-button {
+    background: linear-gradient(0.25turn, var(--leftSideLogin), var(--rightSideLogin));
     transition:
-        --leftSide 0.2s cubic-bezier(0.37, 0, 0.63, 1),
-        --rightSide 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+        --leftSideLogin 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        --rightSideLogin 0.2s cubic-bezier(0.37, 0, 0.63, 1);
 }
 
 #log-in-button:hover, #log-in-button:focus {
-    --leftSide: rgb(88, 88, 183);
+    --rightSideLogin: rgb(88, 88, 183);
 }
 
 #log-in-button:active {
-    --leftSide: rgb(88, 88, 183);
-    --rightSide: rgb(88, 88, 183);
+    --leftSideLogin: rgb(88, 88, 183);
+    --rightSideLogin: rgb(88, 88, 183);
+}
+
+#sign-up-button {
+    background: linear-gradient(0.25turn, var(--leftSideSignUp), var(--rightSideSignUp));
+    transition:
+        --leftSideSignUp 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        --rightSideSignUp 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+#sign-up-button:hover, #log-in-button:focus {
+    --leftSideSignUp: rgb(211, 79, 79);
+}
+
+#sign-up-button:active {
+    --leftSideSignUp: rgb(211, 79, 79);
+    --rightSideSignUp: rgb(211, 79, 79);
 }
