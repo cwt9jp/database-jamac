@@ -20,7 +20,7 @@ nav {
     min-height: 4rem;
     display: grid;
     grid-template-areas:
-            "logo button";
+       "left button";
     grid-template-columns: 1fr 1fr;
     grid-template-rows: minmax(5rem, max-content);
     padding-right: 5vw;
@@ -31,15 +31,25 @@ nav *:focus {
     border-radius: 0.5rem;
 }
 
-.logo {
+.left {
     margin: auto 1vw;
-    grid-area: logo;
+    grid-area: left;
     width: fit-content;
+    display: flex;
+    gap: 4vw;
 }
 
-.logo img {
+.left img {
     display: block;
     width: 100px;
+}
+
+#database-link {
+    margin: auto 0;
+    padding: 20px 0;
+    color: rgb(53, 53, 53);
+    text-decoration: none;
+    font-size: large;
 }
 
 /* Log in/Sign up button */

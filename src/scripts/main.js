@@ -35,7 +35,7 @@ onAuthStateChanged(auth, (user) => {
             accountButton.classList.remove("hidden");
         }
         else {
-            accountButton.textContent = `Hi user`;
+            accountButton.textContent = "Hi user";
             accountButton.classList.remove("hidden");
         }
 
