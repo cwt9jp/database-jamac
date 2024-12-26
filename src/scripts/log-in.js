@@ -59,11 +59,14 @@ logIn.addEventListener("click", () => {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            if (errorCode === "auth/email-already-in-use") {
-                errorMessageElement.textContent = "Email is already associated with an account";
+            if (errorCode === "auth/user-not-found") {
+                errorMessageElement.textContent = "Email not found. Please check your email for typos";
+                return;
             }
-            else {
-                errorMessageElement.textContent = `Error: ${errorMessage}`;
+            if (errorCode === "auth/wrong-password") {
+                errorMessageElement.textContent = "Password is incorrect. Please try again";
+                return;
             }
+            errorMessageElement.textContent = "";
         });
 })

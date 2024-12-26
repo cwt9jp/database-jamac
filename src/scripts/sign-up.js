@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-import { getAuth, connectAuthEmulator, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getAuth, connectAuthEmulator, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
@@ -21,7 +21,7 @@ const auth = getAuth();
 connectAuthEmulator(auth, "http://127.0.0.1:9099");
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        window.location.href = '/';
+        // window.location.href = '/';
     }
 });
 
@@ -66,10 +66,14 @@ signUp.addEventListener("click", () => {
     // Send email to Firebase
     const email = emailInput.value;
     const password = initialPassword.value;
+    const displayName = nameInput.value;
 
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
         const user = userCredential.user;
+        updateProfile(user, {
+            displayName: displayName
+        })
         window.location.href = '/'
     })
     .catch((error) => {

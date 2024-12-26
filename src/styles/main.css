@@ -91,18 +91,18 @@ nav *:focus {
     cursor: pointer;
 }
 
-#log-in-button {
+#log-in-button, #account-button {
     background: linear-gradient(0.25turn, var(--leftSideLogin), var(--rightSideLogin));
     transition:
         --leftSideLogin 0.2s cubic-bezier(0.37, 0, 0.63, 1),
         --rightSideLogin 0.2s cubic-bezier(0.37, 0, 0.63, 1);
 }
 
-#log-in-button:hover, #log-in-button:focus {
+#log-in-button:hover, #log-in-button:focus, #account-button:hover, #account-button:focus {
     --rightSideLogin: rgb(88, 88, 183);
 }
 
-#log-in-button:active {
+#log-in-button:active, #account-button:active {
     --leftSideLogin: rgb(88, 88, 183);
     --rightSideLogin: rgb(88, 88, 183);
 }
@@ -121,4 +121,34 @@ nav *:focus {
 #sign-up-button:active {
     --leftSideSignUp: rgb(211, 79, 79);
     --rightSideSignUp: rgb(211, 79, 79);
+}
+
+/* If signed in: User info */
+
+.hidden {
+    display: none !important;
+}
+
+#account-button {
+    display: block;
+    color: white;
+    font-size: large;
+    text-decoration: none;
+
+    grid-area: button;
+    padding: 1rem 2rem;
+    margin: auto 0;
+    width: fit-content;
+    justify-self: right;
+
+    border: none;
+    border-radius: 0.4rem;
+
+    cursor: pointer;
+}
+
+#button-dropdown {
+    position: absolute;
+    top: 90px;
+    right: 5vw;
 }

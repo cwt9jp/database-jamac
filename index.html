@@ -11,7 +11,7 @@
 
         <link type="text/css" rel="stylesheet" href="/src/styles/main.css" />
 
-        <script type="module" src="/src/scripts/default.js"></script>
+        <script type="module" src="/src/scripts/main.js"></script>
 
         <link rel="icon" href="/src/images/icon.ico" type="image/x-icon">
     </head>
@@ -20,9 +20,15 @@
             <nav>
                 <a class="logo" href="/"><img src="/src/images/djp-logo.svg" alt="DJP Logo" width="70"/></a>
 
-                <div id="button-wrapper">
+                <div id="button-wrapper" class="hidden">
                     <a id="log-in-button" href="/log-in/">Log in</a>
                     <a id="sign-up-button" href="/sign-up/">Sign up</a>
+                </div>
+
+                <button type="button" id="account-button" class="hidden"></button>
+                <div id="button-dropdown" class="hidden">
+                    <a id="account-settings" href="/">Account settings</a>
+                    <button type="button" id="sign-out">Sign out</button>
                 </div>
             </nav>
         </header>
