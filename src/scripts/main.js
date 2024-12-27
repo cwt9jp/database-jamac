@@ -1,6 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-import { getAuth, connectAuthEmulator, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+import { getAuth, connectAuthEmulator, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
@@ -14,7 +14,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
 const auth = getAuth();
+auth.useDeviceLanguage();
 
 const buttonWrapper = document.getElementById("button-wrapper");
 const accountButton = document.getElementById("account-button");
@@ -47,9 +49,34 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-accountButton.addEventListener("click", () => {
-    buttonDropdown.classList.toggle("hidden");
-})
+// Dropdown
+
+accountButton.onclick = showDropDown;
+
+function showDropDown(e){
+    accountButton.onclick = function(){};
+    e.stopPropagation();
+    buttonDropdown.classList.remove("hidden");
+
+    document.onclick = function(e) {
+        var ele = document.elementFromPoint(e.clientX, e.clientY);
+        if (ele == accountButton){
+            hideDropDown();
+            return;
+        }
+        do {
+            if (ele == buttonDropdown)
+                return;
+        } while (ele = ele.parentNode);
+        hideDropDown();
+     };
+}
+
+function hideDropDown(){
+    document.onclick = function(){};
+    buttonDropdown.classList.add("hidden");
+    accountButton.onclick = showDropDown;
+}
 
 signOutButton.addEventListener("click", () => {
     signOut(auth);

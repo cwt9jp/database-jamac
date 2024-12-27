@@ -136,7 +136,7 @@ button:active {
 
 /* Sign in with Google */
 
-.sign-in-google {
+#sign-in-google {
     display: flex;
     margin-inline: auto;
     align-items: center;

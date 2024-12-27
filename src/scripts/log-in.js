@@ -1,6 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-import { getAuth, connectAuthEmulator, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+import { getAuth, connectAuthEmulator, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
@@ -18,6 +18,7 @@ const analytics = getAnalytics(app);
 
 // If already signed in: redirect user
 const auth = getAuth();
+auth.useDeviceLanguage();
 connectAuthEmulator(auth, "http://127.0.0.1:9099");
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -69,4 +70,24 @@ logIn.addEventListener("click", () => {
             }
             errorMessageElement.textContent = "";
         });
+})
+
+// Sign in with Google
+const googleSignInButton = document.getElementById("sign-in-google");
+const provider = new GoogleAuthProvider();
+
+googleSignInButton.addEventListener("click", () => {
+    signInWithPopup(auth, provider)
+    .then((userCredential) => {
+        window.location.href = '/';
+    })
+    .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        if (errorCode != "auth/cancelled-popup-request") {
+            errorMessageElement.textContent = `Error: ${errorMessage}`;
+        }
+    });
 })
