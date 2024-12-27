@@ -26,9 +26,8 @@ nav {
     padding-right: 5vw;
 }
 
-nav *:focus {
-    outline: 2px solid black;
-    border-radius: 0.5rem;
+nav a {
+    text-decoration: none;
 }
 
 .left {
@@ -44,12 +43,52 @@ nav *:focus {
     width: 100px;
 }
 
-#database-link {
+.hidden {
+    display: none !important;
+}
+
+.login-element {
     margin: auto 0;
     padding: 20px 0;
-    color: rgb(53, 53, 53);
-    text-decoration: none;
+
     font-size: large;
+    color: black;
+
+    border-bottom: 3px solid rgb(88, 88, 183);
+    border-radius: 3px;
+
+    transition:
+        border-bottom 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        border-radius 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+
+}
+
+.login-element:hover {
+    border-bottom: 5px solid rgb(211, 79, 79);
+    border-radius: 5px;
+}
+
+.login-element:active {
+    font-weight: bold;
+}
+
+#account-button {
+    width: fit-content;
+    justify-self: right;
+
+    background-color: transparent;
+
+    border-top: none;
+    border-right: none;
+    border-left: none;
+
+    cursor: pointer;
+}
+
+#button-dropdown {
+    position: absolute;
+    top: 90px;
+    right: 5vw;
 }
 
 /* Log in/Sign up button */
@@ -95,24 +134,23 @@ nav *:focus {
     display: inline-block;
     margin: auto 0;
 
-    border: none;
     border-radius: 0.4rem;
 
     cursor: pointer;
 }
 
-#log-in-button, #account-button {
+#log-in-button {
     background: linear-gradient(0.25turn, var(--leftSideLogin), var(--rightSideLogin));
     transition:
         --leftSideLogin 0.2s cubic-bezier(0.37, 0, 0.63, 1),
         --rightSideLogin 0.2s cubic-bezier(0.37, 0, 0.63, 1);
 }
 
-#log-in-button:hover, #log-in-button:focus, #account-button:hover, #account-button:focus {
+#log-in-button:hover, #log-in-button:focus {
     --rightSideLogin: rgb(88, 88, 183);
 }
 
-#log-in-button:active, #account-button:active {
+#log-in-button:active {
     --leftSideLogin: rgb(88, 88, 183);
     --rightSideLogin: rgb(88, 88, 183);
 }
@@ -131,34 +169,4 @@ nav *:focus {
 #sign-up-button:active {
     --leftSideSignUp: rgb(211, 79, 79);
     --rightSideSignUp: rgb(211, 79, 79);
-}
-
-/* If signed in: User info */
-
-.hidden {
-    display: none !important;
-}
-
-#account-button {
-    display: block;
-    color: white;
-    font-size: large;
-    text-decoration: none;
-
-    grid-area: button;
-    padding: 1rem 2rem;
-    margin: auto 0;
-    width: fit-content;
-    justify-self: right;
-
-    border: none;
-    border-radius: 0.4rem;
-
-    cursor: pointer;
-}
-
-#button-dropdown {
-    position: absolute;
-    top: 90px;
-    right: 5vw;
 }

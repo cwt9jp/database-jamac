@@ -20,6 +20,7 @@ const buttonWrapper = document.getElementById("button-wrapper");
 const accountButton = document.getElementById("account-button");
 const buttonDropdown = document.getElementById("button-dropdown");
 const signOutButton = document.getElementById("sign-out");
+const databaseLink = document.getElementById("database-link");
 
 connectAuthEmulator(auth, "http://127.0.0.1:9099");
 
@@ -32,14 +33,13 @@ onAuthStateChanged(auth, (user) => {
 
         if (displayName) {
             accountButton.textContent = `Hi, ${displayName}`;
-            accountButton.classList.remove("hidden");
         }
         else {
-            accountButton.textContent = "Hi user";
-            accountButton.classList.remove("hidden");
+            accountButton.textContent = "Hi, user";
         }
 
-        console.log(uid);
+        accountButton.classList.remove("hidden");
+        databaseLink.classList.remove("hidden");
     } else {
         // User is signed out
         console.log("signed out");
