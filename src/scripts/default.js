@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
-import { getAuth, connectAuthEmulator, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getAuth, connectAuthEmulator, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
@@ -18,6 +18,13 @@ const analytics = getAnalytics(app);
 const auth = getAuth();
 auth.useDeviceLanguage();
 
+const buttonWrapper = document.getElementById("button-wrapper");
+const accountButton = document.getElementById("account-button");
+const buttonDropdown = document.getElementById("button-dropdown");
+const signOutButton = document.getElementById("sign-out");
+const databaseLink = document.getElementById("database-link");
+const guideLink = document.getElementById("guide-link");
+
 connectAuthEmulator(auth, "http://127.0.0.1:9099");
 
 onAuthStateChanged(auth, (user) => {
@@ -25,9 +32,55 @@ onAuthStateChanged(auth, (user) => {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         const uid = user.uid;
-        console.log(uid);
+        const displayName = user.displayName;
+
+        if (displayName) {
+            accountButton.textContent = `Hi, ${displayName}`;
+        }
+        else {
+            accountButton.textContent = "Hi, user";
+        }
+
+        accountButton.classList.remove("hidden");
+        databaseLink.classList.remove("hidden");
+        guideLink.classList.remove("hidden");
     } else {
         // User is signed out
         console.log("signed out");
+        buttonWrapper.classList.remove("hidden");
     }
 });
+
+// Dropdown
+
+accountButton.onclick = showDropDown;
+
+function showDropDown(e){
+    accountButton.onclick = function(){};
+    e.stopPropagation();
+    buttonDropdown.classList.remove("hidden");
+
+    document.onclick = function(e) {
+        var ele = document.elementFromPoint(e.clientX, e.clientY);
+        if (ele == accountButton){
+            hideDropDown();
+            return;
+        }
+        do {
+            if (ele == buttonDropdown)
+                return;
+        } while (ele = ele.parentNode);
+        hideDropDown();
+     };
+}
+
+function hideDropDown(){
+    document.onclick = function(){};
+    buttonDropdown.classList.add("hidden");
+    accountButton.onclick = showDropDown;
+}
+
+signOutButton.addEventListener("click", () => {
+    signOut(auth);
+    window.location.reload();
+})

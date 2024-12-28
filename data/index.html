@@ -9,20 +9,73 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
 
-        <link type="text/css" rel="stylesheet" href="/src/styles/default.css" />
+        <link type="text/css" rel="stylesheet" href="/src/styles/data.css" />
 
         <script type="module" src="/src/scripts/default.js"></script>
+        <script type="module" src="/src/scripts/data.js"></script>
 
         <link rel="icon" href="/src/images/icon.ico" type="image/x-icon">
     </head>
     <body>
         <header>
-            <a href="/" id="logo">
-                <img src="/src/images/djp-logo.svg" />
-            </a>
+            <nav>
+                <div class="left">
+                    <a href="/"><img src="/src/images/djp-logo.svg" alt="DJP Logo" /></a>
+                    <a href="/data/" id="database-link" class="hidden login-element">Database</a> 
+                    <a href="/" id="guide-link" class="hidden login-element">Guide</a>
+                </div>
+
+                <div id="button-wrapper" class="hidden">
+                    <a id="log-in-button" href="/log-in/">Log in</a>
+                    <a id="sign-up-button" href="/sign-up/">Sign up</a>
+                </div>
+
+                <button type="button" id="account-button" class="hidden login-element"></button>
+                <div id="button-dropdown" class="hidden" tabindex="-1">
+                    <a id="account-settings" href="/">Account settings</a>
+                    <button type="button" id="sign-out">Sign out</button>
+                </div>
+            </nav>
+
+            <form id="filter-wrapper" method="get">
+                <p>
+                    <label for="difficulty-slider">Difficulty:</label>
+                    <input type="range" name="difficulty-slider" id="difficulty-slider" min="0" max="10" step="1"/>
+                </p>
+                <fieldset>
+                    <legend>Category:</legend>
+                    <ul>
+                        <li>
+                            <label for="algebra-checkbox">Algebra</label>
+                            <input type="checkbox" id="algebra-checkbox" name="algebra-checkbox" value="checked" />
+                        </li>
+                        <li>
+                            <label for="geometry-checkbox">Geometry</label>
+                            <input type="checkbox" id="geometry-checkbox" name="geometry-checkbox" value="checked" />
+                        </li>
+                        <li>
+                            <label for="number-theory-checkbox">Number Theory</label>
+                            <input type="checkbox" id="number-theory-checkbox" name="number-theory-checkbox" value="checked" />
+                        </li>
+                    </ul>
+                </fieldset>
+                <p>
+                    <input type="search" id="searchbar" name="searchbar" placeholder="Search" />
+                </p>
+                <p>
+                    <button type="submit" id="filter-submit">Filter</button>
+                </p>
+            </form>
         </header>
         <main>
-            CONTENT HERE
+            <p>
+                CONTENT HERE
+            </p>
         </main>
+        <footer>
+            <p>
+                &copy; 2024 Albemarle Math Club. Use of problems is allowed under the <a target="_blank" rel="noopener" href="https://opensource.org/license/mit">MIT License</a>.
+            </p>
+        </footer>
     </body>
 </html>

@@ -1,0 +1,120 @@
+@import url(/src/styles/default.css) layer(default);
+
+/* Filter styling */
+
+#filter-wrapper {
+    padding-inline: 1.4vw;
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr 0.5fr;
+    justify-items: center;
+    align-items: center;
+}
+
+#filter-wrapper * {
+    display: inline;
+    height: fit-content;
+}
+
+#filter-wrapper legend {
+    float: left;
+}
+
+#filter-wrapper fieldset {
+    border: none;
+}
+
+#filter-wrapper ul {
+    padding-left: 20px;
+}
+
+#filter-wrapper ul li {
+    padding-inline: 5px;
+}
+
+#searchbar {
+    appearance: none;
+    padding: 4px 8px;
+    width: 20vw;
+    border: 1px solid rgb(109, 109, 109);
+    background-color: white;
+    border-radius: 5px;
+
+    transition: background-color 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+    ;
+}
+
+#searchbar:hover {
+    background-color: rgb(241, 241, 241);
+}
+
+#filter-wrapper input[type="checkbox"] {
+    appearance: none;
+
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: rgb(255, 255, 255);
+
+    position: relative;
+    width: 1em;
+    height: 1em;
+    border: 1px solid gray;
+    border-radius: 3px;
+    margin-left: 3px;
+    /* Adjusts the position of the checkboxes on the text baseline */
+    vertical-align: -3px;
+
+    transition: background-color 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+
+}
+  
+#filter-wrapper input[type="checkbox"]:checked {
+    background-image: url(/src/images/check.svg);
+}
+
+#filter-wrapper input[type="checkbox"]:not(:disabled):hover {
+    background-color: rgb(241, 241, 241);
+}
+
+#filter-wrapper input[type="checkbox"]:disabled {
+    border-color: black;
+    background-color:rgb(176, 176, 176);
+}
+
+/* Submit button */
+
+@property --leftSide {
+    syntax: '<color>';
+    initial-value: rgb(211, 79, 79);
+    inherits: false;
+}
+
+@property --rightSide {
+    syntax: '<color>';
+    initial-value: rgb(211, 79, 79);
+    inherits: false;
+}
+
+#filter-submit {
+    background: linear-gradient(0.25turn, var(--leftSide), var(--rightSide));
+    border: none;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 15px;
+
+    cursor: pointer;
+
+    transition:
+    --leftSide 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+    --rightSide 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+#filter-submit:hover {
+    --leftSide: rgb(88, 88, 183);
+}
+
+#filter-submit:active {
+    font-weight: bold;
+    --leftSide: rgb(88, 88, 183);
+    --rightSide: rgb(88, 88, 183);
+}

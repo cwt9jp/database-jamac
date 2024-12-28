@@ -3,6 +3,7 @@
 header {
     display: flex;
     justify-content: center;
+    border-bottom: none;
 }
 
 #logo img {
@@ -29,12 +30,7 @@ button,
 input,
 select,
 textarea {
-    font-family: inherit;
-    font-size: 100%;
     width: min(25vw, 250px);
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
 }
 
 input {
@@ -74,7 +70,7 @@ label {
         color 0.15s ease-in-out;
 }
 
-label.focused {
+input:focus ~ label {
     color: rgb(211, 79, 79);
     top: -16%;
     font-size: 0.8em;
