@@ -46,7 +46,7 @@ input:focus {
     border: 1px solid rgb(211, 79, 79);
 }
 
-form p {
+form div {
     position: relative;
     display: inline-block;
     margin: 10px;

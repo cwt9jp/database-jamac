@@ -17,6 +17,7 @@
         <link rel="icon" href="/src/images/icon.ico" type="image/x-icon">
     </head>
     <body>
+        <script src="/src/scripts/nouislider.min.js"></script>
         <header>
             <nav>
                 <div class="left">
@@ -38,10 +39,10 @@
             </nav>
 
             <form id="filter-wrapper" method="get">
-                <p>
-                    <label for="difficulty-slider">Difficulty:</label>
-                    <input type="range" name="difficulty-slider" id="difficulty-slider" min="0" max="10" step="1"/>
-                </p>
+                <div id="difficulty-slider-wrapper">
+                    <label>Difficulty:</label>
+                    <div id="difficulty-slider"></div>
+                </div>
                 <fieldset>
                     <legend>Category:</legend>
                     <ul>
@@ -59,12 +60,13 @@
                         </li>
                     </ul>
                 </fieldset>
-                <p>
+                <div>
                     <input type="search" id="searchbar" name="searchbar" placeholder="Search" />
-                </p>
-                <p>
+                    <img src="/src/images/search.svg" aria-hidden="true" />
+                </div>
+                <div>
                     <button type="submit" id="filter-submit">Filter</button>
-                </p>
+                </div>
             </form>
         </header>
         <main>

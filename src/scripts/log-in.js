@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
-import { getAuth, connectAuthEmulator, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getAuth, connectAuthEmulator, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
@@ -68,7 +68,7 @@ logIn.addEventListener("click", () => {
                 errorMessageElement.textContent = "Password is incorrect. Please try again";
                 return;
             }
-            errorMessageElement.textContent = "";
+            errorMessageElement.textContent = errorMessage;
         });
 })
 
@@ -79,6 +79,13 @@ const provider = new GoogleAuthProvider();
 googleSignInButton.addEventListener("click", () => {
     signInWithPopup(auth, provider)
     .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user.displayName.split(" ").length);
+        if (user.displayName.split(" ").length > 1) {
+            updateProfile(user, {
+                displayName: user.displayName.split(" ")[0]
+            })
+        }
         window.location.href = '/';
     })
     .catch((error) => {

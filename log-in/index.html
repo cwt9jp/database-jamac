@@ -25,28 +25,28 @@
         <main>
             <form id="log-in-form" novalidate>
                 <h1>Log in</h1>
-                <p>
-                    <label for="email">Email<span aria-label="required">*</span></label>
+                <div>
                     <input type="email" id="email" name="user-email" required autocomplete="email"/>
-                </p>
-                <p>
-                    <label for="password">Password<span aria-label="required">*</span></label>
+                    <label for="email">Email<span aria-label="required">*</span></label>
+                </div>
+                <div>
                     <input type="password" id="password" name="user-password" required minlength="6" maxlength="4096" />
-                </p>
-                <p>
+                    <label for="password">Password<span aria-label="required">*</span></label>
+                </div>
+                <div>
                     <button type="button" id="submit">Log in</button>
-                </p>
+                </div>
                 <br />
-                <p id="error-message"></p>
+                <p id="error-message"></div>
 
                 <div class="separator">Or</div>
 
-                <p>
+                <div>
                     <button type="button" id="sign-in-google">
                         <img src="/src/images/google-logo.svg" />
-                        <p>Sign in with Google</p>
+                        <div>Sign in with Google</div>
                     </button>
-                </p>
+                </div>
             </form>
         </main>
     </body>

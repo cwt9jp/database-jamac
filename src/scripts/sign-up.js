@@ -99,9 +99,11 @@ googleSignInButton.addEventListener("click", () => {
     signInWithPopup(auth, provider)
     .then((userCredential) => {
         const user = userCredential.user;
-        updateProfile(user, {
-            displayName: user.displayName.split(" ")[0]
-        })
+        if (user.displayName.split(" ").length > 1) {
+                updateProfile(user, {
+                displayName: user.displayName.split(" ")[0]
+            })
+        }
         window.location.href = '/';
     })
     .catch((error) => {

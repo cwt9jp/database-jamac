@@ -25,3 +25,16 @@ onAuthStateChanged(auth, (user) => {
         window.location.href = "/";
     }
 });
+
+var slider = document.getElementById('difficulty-slider');
+
+noUiSlider.create(slider, {
+    start: [0, 10],
+    connect: true,
+    tooltips: [{ to: function(value) { return value } }, { to: function(value) { return value } }],
+    range: {
+        'min': 0,
+        'max': 10
+    },
+    step: 1
+});

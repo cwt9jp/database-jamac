@@ -25,36 +25,36 @@
         <main>
             <form id="sign-up-form" novalidate>
                 <h1>Sign up</h1>
-                <p>
+                <div>
                     <input type="email" id="email" name="user-email" required autocomplete="email" />
                     <label for="email">Email<span aria-label="required">*</span></label>
-                </p>
-                <p>
+                </div>
+                <div>
                     <input type="text" id="display-name" name="display-name" required maxlength="4096" />
                     <label for="display-name">Display name<span aria-label="required">*</span></label>
-                </p>
-                <p>
+                </div>
+                <div>
                     <input type="password" id="password-initial" name="password-initial" required minlength="6" maxlength="4096" />
                     <label for="password-initial">Password<span aria-label="required">*</span></label>
-                </p>
-                <p>
+                </div>
+                <div>
                     <input type="password" id="password-final" name="password-final" required minlength="6" maxlength="4096" />
                     <label for="password-final">Retype your password<span aria-label="required">*</span></label>
-                </p>
-                <p>
+                </div>
+                <div>
                     <button type="button" id="submit">Sign up</button>
-                </p>
+                </div>
                 <br />
-                <p id="error-message"></p>
+                <p id="error-message"></div>
 
                 <div class="separator">Or</div>
 
-                <p>
+                <div>
                     <button type="button" id="sign-in-google">
                         <img src="/src/images/google-logo.svg" />
-                        <p>Sign up with Google</p>
+                        <div>Sign up with Google</div>
                     </button>
-                </p>
+                </div>
             </form>
         </main>
     </body>

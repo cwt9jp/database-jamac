@@ -184,6 +184,7 @@ nav .login-element:active {
     top: 95px;
     right: 5vw;
     background-color: rgb(255, 255, 255);
+    z-index: 100;
 
     padding: 2px 5px;
     box-shadow: 0px 0px 15px rgba(129, 129, 129, 0.299);
@@ -279,8 +280,9 @@ input[type="checkbox"]:disabled {
 
 input[type="search"] {
     appearance: none;
-    padding: 4px 8px;
-    width: 20vw;
+    padding-block: 4px;
+    padding-inline: 30px 10px;
+    width: 17vw;
     border: 1px solid rgb(109, 109, 109);
     background-color: white;
     border-radius: 5px;
@@ -288,6 +290,12 @@ input[type="search"] {
     transition: background-color 0.2s cubic-bezier(0.37, 0, 0.63, 1);
 }
 
-input[type="search"]:hover {
+input[type="search"] ~ img {
+    position: absolute;
+    top: calc(50% - 12px);
+    left: 5px;
+}
+
+input[type="search"]:hover, input[type="search"]:focus, input[type="search"]:active {
     background-color: rgb(241, 241, 241);
 }
