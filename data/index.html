@@ -13,6 +13,7 @@
 
         <script type="module" src="/src/scripts/default.js"></script>
         <script type="module" src="/src/scripts/data.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
         <link rel="icon" href="/src/images/icon.ico" type="image/x-icon">
     </head>
@@ -58,6 +59,10 @@
                             <label for="number-theory-checkbox">Number Theory</label>
                             <input type="checkbox" id="number-theory-checkbox" name="number-theory-checkbox" value="checked" />
                         </li>
+                        <li>
+                            <label for="used-checkbox">Used</label>
+                            <input type="checkbox" id="used-checkbox" name="used-checkbox" value="checked" />
+                        </li>
                     </ul>
                 </fieldset>
                 <div>
@@ -65,14 +70,13 @@
                     <img src="/src/images/search.svg" aria-hidden="true" />
                 </div>
                 <div>
-                    <button type="submit" id="filter-submit">Filter</button>
+                    <button type="button" id="filter-submit">Filter</button>
                 </div>
             </form>
         </header>
         <main>
-            <p>
-                CONTENT HERE
-            </p>
+            <h1 id="filter-results"></h1>
+            <div id="problem-wrapper"></div>
         </main>
         <footer>
             <p>

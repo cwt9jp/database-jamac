@@ -3,7 +3,7 @@ rgb(211, 79, 79) red */
 
 /* General styling */
 
-* {
+html {
     font-family: 'Heebo', "Trebuchet MS", sans-serif;
     scroll-behavior: smooth;
     hyphens: auto;
@@ -210,7 +210,7 @@ nav .login-element:active {
     cursor: pointer;
 }
 
-#button-dropdown *:hover {
+#button-dropdown *:hover, #button-dropdown *:focus {
     background-color: rgb(242, 242, 242);
 }
 

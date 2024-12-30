@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
 import { getAuth, connectAuthEmulator, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getFirestore, connectFirestoreEmulator, collection, query, where, getDocs} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
@@ -26,6 +27,8 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+
+// Slider
 var slider = document.getElementById('difficulty-slider');
 
 noUiSlider.create(slider, {
@@ -36,5 +39,44 @@ noUiSlider.create(slider, {
         'min': 0,
         'max': 10
     },
-    step: 1
+    step: 1,
+    behaviour: "tap-drag"
 });
+
+// Get data
+const problemWrapper = document.getElementById('problem-wrapper');
+const filterResults = document.getElementById('filter-results');
+
+function title(str) {
+    return str.replace(
+      /\w\S*/g,
+      text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+    );
+}
+
+const db = getFirestore();
+connectFirestoreEmulator(db, "127.0.0.1", 8081);
+
+const q = query(collection(db, "problems"), where("status", "==", "used"));
+
+const querySnapshot = await getDocs(q);
+
+if (querySnapshot.size == 0) {
+    filterResults.textContent = "No results";
+}
+else if (querySnapshot.size == 1) {
+    filterResults.textContent = querySnapshot.size + " result";
+}
+else {
+    filterResults.textContent = querySnapshot.size + " results";
+}
+
+querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  problemWrapper.innerHTML += 
+    `<div id="${doc.id}" class="problem">
+        <h2>${title(doc.data().category)} &centerdot; ${doc.data().difficulty} &centerdot; ${doc.data().name}</h2>
+        <p>${doc.data().problem}</p>
+    </div>`;
+});
+MathJax.typeset();

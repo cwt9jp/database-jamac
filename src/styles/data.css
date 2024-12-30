@@ -62,8 +62,17 @@ form .noUi-handle::before, form .noUi-handle::after {
     all: unset;
 }
 
+form .noUi-handle {
+    cursor: grab;
+    transition: border 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+form .noUi-handle:active {
+    cursor: grabbing;
+}
+
 form .noUi-handle-lower {
-    background: white;
+    background-color: white;
     width: 28px;
     height: 28px;
     border-radius: 14px;
@@ -71,11 +80,19 @@ form .noUi-handle-lower {
 }
 
 form .noUi-handle-upper {
-    background: white;
+    background-color: white;
     width: 28px;
     height: 28px;
     border-radius: 14px;
     border: 5px solid rgb(211, 79, 79);
+}
+
+form .noUi-handle-lower:hover, form .noUi-handle-lower:focus {
+    border: 5px solid rgb(52, 52, 109);
+}
+
+form .noUi-handle-upper:hover, form .noUi-handle-upper:focus {
+    border: 5px solid rgb(132, 53, 53);
 }
 
 /* Submit button */
