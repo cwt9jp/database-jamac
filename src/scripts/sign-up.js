@@ -100,9 +100,9 @@ googleSignInButton.addEventListener("click", () => {
     .then((userCredential) => {
         const user = userCredential.user;
         if (user.displayName.split(" ").length > 1) {
-                updateProfile(user, {
+            updateProfile(user, {
                 displayName: user.displayName.split(" ")[0]
-            })
+            });
         }
         window.location.href = '/';
     })

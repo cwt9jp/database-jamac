@@ -132,3 +132,24 @@ form .noUi-handle-upper:hover, form .noUi-handle-upper:focus {
     --leftSide: rgb(88, 88, 183);
     --rightSide: rgb(88, 88, 183);
 }
+
+/* Problem styling */
+
+#problem-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+}
+
+.problem {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    padding: 0 20px 5px 20px;
+    border-radius: 10px;
+    flex: 1;
+}
+
+.problem h2 {
+    margin-top: 10px;
+    padding: 0;
+    font-size: medium;
+}

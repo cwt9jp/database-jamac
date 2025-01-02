@@ -1,3 +1,17 @@
+/*
+Data has ten fields:
+- category
+- difficulty
+- name
+- problem
+- solution
+- status
+- answer
+- author
+- created
+- updated
+*/
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
 import { getAuth, connectAuthEmulator, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
@@ -54,6 +68,10 @@ function title(str) {
     );
 }
 
+function difficultyToColor(difficulty) {
+    return `rgb(${(88*(10-difficulty) + 211*(difficulty))/10}, ${(88*(10-difficulty) + 79*(difficulty))/10}, ${(183*(10-difficulty) + 79*(difficulty))/10})`;
+}
+
 const db = getFirestore();
 connectFirestoreEmulator(db, "127.0.0.1", 8081);
 
@@ -74,7 +92,7 @@ else {
 querySnapshot.forEach((doc) => {
   // doc.data() is never undefined for query doc snapshots
   problemWrapper.innerHTML += 
-    `<div id="${doc.id}" class="problem">
+    `<div id="${doc.id}" class="problem" style="border-bottom: 5px solid ${difficultyToColor(doc.data().difficulty)}">
         <h2>${title(doc.data().category)} &centerdot; ${doc.data().difficulty} &centerdot; ${doc.data().name}</h2>
         <p>${doc.data().problem}</p>
     </div>`;
