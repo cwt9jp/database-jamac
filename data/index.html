@@ -38,45 +38,61 @@
                     <button type="button" id="sign-out">Sign out</button>
                 </div>
             </nav>
-
-            <form id="filter-wrapper" method="get">
-                <div id="difficulty-slider-wrapper">
-                    <label>Difficulty:</label>
-                    <div id="difficulty-slider"></div>
-                </div>
-                <fieldset>
-                    <legend>Category:</legend>
-                    <ul>
-                        <li>
-                            <label for="algebra-checkbox">Algebra</label>
-                            <input type="checkbox" id="algebra-checkbox" name="algebra-checkbox" value="checked" />
-                        </li>
-                        <li>
-                            <label for="geometry-checkbox">Geometry</label>
-                            <input type="checkbox" id="geometry-checkbox" name="geometry-checkbox" value="checked" />
-                        </li>
-                        <li>
-                            <label for="number-theory-checkbox">Number Theory</label>
-                            <input type="checkbox" id="number-theory-checkbox" name="number-theory-checkbox" value="checked" />
-                        </li>
-                        <li>
-                            <label for="used-checkbox">Used</label>
-                            <input type="checkbox" id="used-checkbox" name="used-checkbox" value="checked" />
-                        </li>
-                    </ul>
-                </fieldset>
-                <div>
-                    <input type="search" id="searchbar" name="searchbar" placeholder="Search" />
-                    <img src="/src/images/search.svg" aria-hidden="true" />
-                </div>
-                <div>
-                    <button type="button" id="filter-submit">Filter</button>
-                </div>
-            </form>
         </header>
         <main>
-            <h1 id="filter-results"></h1>
-            <div id="problem-wrapper"></div>
+            <aside>
+                <form id="filter-wrapper" method="get">
+                    <div id="difficulty-slider-wrapper">
+                        <label id="slider-label">Difficulty:</label>
+                        <div id="difficulty-slider"></div>
+                    </div>
+                    <fieldset>
+                        <legend>Category:</legend>
+                        <ul>
+                            <li>
+                                <input type="checkbox" id="algebra-checkbox" name="algebra-checkbox" value="checked" />
+                                <label for="algebra-checkbox">Algebra</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="geometry-checkbox" name="geometry-checkbox" value="checked" />
+                                <label for="geometry-checkbox">Geometry</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="number-theory-checkbox" name="number-theory-checkbox" value="checked" />
+                                <label for="number-theory-checkbox">Number Theory</label>
+                            </li>
+                        </ul>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Status:</legend>
+                        <ul>
+                            <li>
+                                <input type="checkbox" id="used-checkbox" name="used-checkbox" value="checked" />
+                                <label for="used-checkbox">Used</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="active-checkbox" name="active-checkbox" value="checked" />
+                                <label for="active-checkbox">Active</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="open-checkbox" name="open-checkbox" value="checked" />
+                                <label for="open-checkbox">Open</label>
+                            </li>
+                        </ul>
+                    </fieldset>
+                    <div>
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search" />
+                        <img src="/src/images/search.svg" aria-hidden="true" />
+                    </div>
+                    <div>
+                        <button type="button" id="filter-submit">Filter</button>
+                    </div>
+                </form>
+            </aside>
+            <article>
+                <h1 id="filter-results"></h1>
+                <div id="problem-wrapper"></div>
+            </article>
         </main>
         <footer>
             <p>

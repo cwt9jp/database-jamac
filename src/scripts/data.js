@@ -61,13 +61,6 @@ noUiSlider.create(slider, {
 const problemWrapper = document.getElementById('problem-wrapper');
 const filterResults = document.getElementById('filter-results');
 
-function title(str) {
-    return str.replace(
-      /\w\S*/g,
-      text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
-    );
-}
-
 function difficultyToColor(difficulty) {
     return `rgb(${(88*(10-difficulty) + 211*(difficulty))/10}, ${(88*(10-difficulty) + 79*(difficulty))/10}, ${(183*(10-difficulty) + 79*(difficulty))/10})`;
 }
@@ -93,7 +86,7 @@ querySnapshot.forEach((doc) => {
   // doc.data() is never undefined for query doc snapshots
   problemWrapper.innerHTML += 
     `<div id="${doc.id}" class="problem" style="border-bottom: 5px solid ${difficultyToColor(doc.data().difficulty)}">
-        <h2>${title(doc.data().category)} &centerdot; ${doc.data().difficulty} &centerdot; ${doc.data().name}</h2>
+        <h2>${doc.data().category} &centerdot; ${doc.data().difficulty} &centerdot; ${doc.data().name}</h2>
         <p>${doc.data().problem}</p>
     </div>`;
 });

@@ -17,12 +17,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
+let loggingIn = false;
+
 // If already signed in: redirect user
 const auth = getAuth();
 auth.useDeviceLanguage();
 connectAuthEmulator(auth, "http://127.0.0.1:9099");
 onAuthStateChanged(auth, (user) => {
-    if (user) {
+    if (user && !loggingIn) {
         window.location.href = '/';
     }
 });
@@ -52,6 +54,7 @@ logIn.addEventListener("click", () => {
 
     const email = emailInput.value;
     const password = passwordInput.value;
+    loggingIn = true;
 
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -70,6 +73,7 @@ logIn.addEventListener("click", () => {
                 return;
             }
             errorMessageElement.textContent = errorMessage;
+            loggingIn = false;
         });
 })
 
@@ -81,6 +85,8 @@ googleSignInButton.addEventListener("click", () => {
     // Initialize Firestore
     const db = getFirestore();
     connectFirestoreEmulator(db, "127.0.0.1", 8081);
+    loggingIn = true;
+
     signInWithPopup(auth, provider)
     .then((userCredential) => {
         const user = userCredential.user;
@@ -102,7 +108,6 @@ googleSignInButton.addEventListener("click", () => {
         });
     })
     .then(() => {
-        console.log("finished");
         window.location.href = '/';
     })
     .catch((error) => {
@@ -113,5 +118,6 @@ googleSignInButton.addEventListener("click", () => {
         if (errorCode != "auth/cancelled-popup-request") {
             errorMessageElement.textContent = `Error: ${errorMessage}`;
         }
+        loggingIn = false;
     });
 })
