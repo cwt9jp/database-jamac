@@ -9,7 +9,7 @@ main {
     display: grid;
     grid-template-columns: 1fr 3fr;
     gap: 20px;
-    padding: 30px 20px;
+    padding: 20px 10px;
 }
 
 aside {
@@ -18,24 +18,24 @@ aside {
 
 /* Filter styling */
 
-form fieldset {
+#filter-wrapper fieldset {
     border: none;
 }
 
-form ul {
+#filter-wrapper ul {
     padding-left: 0;
 }
 
-form ul li {
+#filter-wrapper ul li {
     padding-inline: 5px;
     list-style-type: none;
 }
 
-form input[type="checkbox"] {
+#filter-wrapper input[type="checkbox"] {
     margin-right: 5px;
 }
 
-form div:not(#difficulty-slider *, #difficulty-slider), form fieldset {
+#filter-wrapper div:not(#difficulty-slider *, #difficulty-slider), #filter-wrapper fieldset {
     margin: 20px 0px;
     position: relative;
     padding: 0;
@@ -43,41 +43,40 @@ form div:not(#difficulty-slider *, #difficulty-slider), form fieldset {
 
 /* Difficulty slider */
 
-
 #slider-label {
     display: inline-block;
     padding-inline: 2px;
     margin-bottom: 35px;
 }
 
-form .noUi-tooltip {
+#filter-wrapper .noUi-tooltip {
     font-size: small;
 }
 
-form .noUi-target {
+#filter-wrapper .noUi-target {
     margin-left: 1vw;
     width: 16vw;
 }
 
-form .noUi-connect {
+#filter-wrapper .noUi-connect {
     background: rgb(88, 88, 183);
     background: linear-gradient(90deg, rgb(88, 88, 183) 0%, rgb(211, 79, 79) 100%);
 }
 
-form .noUi-handle::before, form .noUi-handle::after {
+#filter-wrapper .noUi-handle::before, #filter-wrapper .noUi-handle::after {
     all: unset;
 }
 
-form .noUi-handle {
+#filter-wrapper .noUi-handle {
     cursor: grab;
     transition: border 0.2s cubic-bezier(0.37, 0, 0.63, 1);
 }
 
-form .noUi-handle:active {
+#filter-wrapper .noUi-handle:active {
     cursor: grabbing;
 }
 
-form .noUi-handle-lower {
+#filter-wrapper .noUi-handle-lower {
     background-color: white;
     width: 28px;
     height: 28px;
@@ -85,7 +84,7 @@ form .noUi-handle-lower {
     border: 5px solid rgb(88, 88, 183);
 }
 
-form .noUi-handle-upper {
+#filter-wrapper .noUi-handle-upper {
     background-color: white;
     width: 28px;
     height: 28px;
@@ -93,56 +92,98 @@ form .noUi-handle-upper {
     border: 5px solid rgb(211, 79, 79);
 }
 
-form .noUi-handle-lower:hover, form .noUi-handle-lower:focus {
+#filter-wrapper .noUi-handle-lower:hover, #filter-wrapper .noUi-handle-lower:focus {
     border: 5px solid rgb(52, 52, 109);
 }
 
-form .noUi-handle-upper:hover, form .noUi-handle-upper:focus {
+#filter-wrapper .noUi-handle-upper:hover, #filter-wrapper .noUi-handle-upper:focus {
     border: 5px solid rgb(132, 53, 53);
 }
 
-/* Submit button */
+/* Submit and create buttons */
 
-@property --leftSide {
+@property --submitLeftSide {
     syntax: '<color>';
     initial-value: rgb(211, 79, 79);
     inherits: false;
 }
 
-@property --rightSide {
+@property --submitRightSide {
     syntax: '<color>';
     initial-value: rgb(211, 79, 79);
     inherits: false;
 }
 
-#filter-submit {
-    background: linear-gradient(0.25turn, var(--leftSide), var(--rightSide));
+@property --createLeftSide {
+    syntax: '<color>';
+    initial-value: rgb(88, 88, 183);
+    inherits: false;
+}
+
+@property --createRightSide {
+    syntax: '<color>';
+    initial-value: rgb(88, 88, 183);
+    inherits: false;
+}
+
+#filter-button-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    width: 17vw;
+    gap: 10px;
+}
+
+#filter-wrapper button {
     border: none;
     color: white;
     border-radius: 5px;
     padding: 5px 15px;
+}
 
-    cursor: pointer;
+#filter-submit {
+    background: linear-gradient(90deg, var(--submitLeftSide), var(--submitRightSide));
 
     transition:
-    --leftSide 0.2s cubic-bezier(0.37, 0, 0.63, 1),
-    --rightSide 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+        --submitLeftSide 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        --submitRightSide 0.2s cubic-bezier(0.37, 0, 0.63, 1);
 }
 
 #filter-submit:hover {
-    --leftSide: rgb(88, 88, 183);
+    --submitRightSide: rgb(88, 88, 183);
 }
 
 #filter-submit:active {
     font-weight: bold;
-    --leftSide: rgb(88, 88, 183);
-    --rightSide: rgb(88, 88, 183);
+    --submitLeftSide: rgb(88, 88, 183);
+    --submitRightSide: rgb(88, 88, 183);
+}
+
+#create-button {
+    background: linear-gradient(90deg, var(--createLeftSide), var(--createRightSide));
+
+    transition:
+        --createLeftSide 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        --createRightSide 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+#create-button:hover {
+    --createLeftSide: rgb(211, 79, 79);
+}
+
+#create-button:active {
+    font-weight: bold;
+    --createLeftSide: rgb(211, 79, 79);
+    --createRightSide: rgb(211, 79, 79);
 }
 
 /* Problem styling */
 
+article {
+    margin-right: min(5vw, 20px);
+}
+
 article h1 {
-    margin-top: 0;
+    margin-block: 0 30px;
 }
 
 #problem-wrapper {
@@ -153,13 +194,180 @@ article h1 {
 
 .problem {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-    padding: 0 20px 5px 20px;
+    padding: 0 20px 10px 20px;
     border-radius: 10px;
-    flex: 1;
+    flex: 100%;
+
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+
+    position: relative;
+
+    transition:
+        border-bottom-width 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        box-shadow 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+        flex 1s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.problem:hover {
+    border-bottom-width: 9px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+
+.problem > img {
+    display: block;
+    width: 30%;
+    margin: 10px auto;
+}
+
+.problem div {
+    visibility: hidden;
+    max-height: 0;
+    overflow: hidden;
+
+    transition:
+        max-height 1s cubic-bezier(0.37, 0, 0.63, 1),
+        visibility 1s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.problem.expanded {
+    cursor: auto;
+    border-bottom-width: 5px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    flex: 100%;
+}
+
+.problem.expanded .contract-button {
+    visibility: visible;
+}
+
+.problem.expanded div {
+    visibility: visible;
+    max-height: 1000px;
+}
+
+.problem .contract-button {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    visibility: hidden;
+
+    background-color: transparent;
+    border: none;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    height: min-content;
+
+    transition:
+        visibility 1s cubic-bezier(0.37, 0, 0.63, 1),
+        background-color 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.problem .contract-button img {
+    display: block;
+}
+
+.problem .contract-button:hover {
+    background-color: rgb(232, 232, 232);
+
+    & img {
+        filter: brightness(0);
+    }
+}
+
+.problem .contract-button:active {
+    background-color: rgb(211, 211, 211);
 }
 
 .problem h2 {
-    margin-top: 10px;
+    margin-top: 15px;
     padding: 0;
     font-size: medium;
+}
+
+/* New problem styling */
+
+.new-problem {
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+
+    max-height: 1000px;
+    flex: 1;
+    overflow: hidden;
+
+    transition:
+        max-height 1s cubic-bezier(0.37, 0, 0.63, 1),
+        flex 1s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.new-problem .new-problem-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.new-problem .new-problem-header *:nth-child(1) {
+    flex: 5;
+}
+
+.new-problem .new-problem-header *:nth-child(2) {
+    min-width: 30px;
+    flex: 1;
+}
+
+.new-problem .new-problem-header *:nth-child(3) {
+    flex: 20;
+    padding-left: 10px;
+}
+
+.new-problem .new-problem-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.new-problem .new-problem-footer button {
+    border: none;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 15px;
+
+    transition: background-color 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.new-problem .new-problem-footer button:first-child {
+    background-color: rgb(211, 79, 79);
+}
+
+.new-problem .new-problem-footer button:first-child:hover {
+    background-color: rgb(132, 53, 53);
+}
+
+.new-problem .new-problem-footer button:last-child {
+    background-color: rgb(88, 88, 183);
+}
+
+.new-problem .new-problem-footer button:last-child:hover {
+    background-color: rgb(52, 52, 109);
+}
+
+.new-problem input, .new-problem textarea, .new-problem select {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid rgb(109, 109, 109);
+}
+
+.new-problem textarea {
+    resize: vertical;
+    min-height: 35px;
+}
+
+.error-message {
+    color: red;
 }

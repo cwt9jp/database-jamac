@@ -85,3 +85,20 @@ signOutButton.addEventListener("click", () => {
     signOut(auth);
     window.location.reload();
 })
+
+// User alert div
+const urlParams = new URLSearchParams(window.location.search);
+const alert = urlParams.get('alert');
+
+if (alert) {
+    const alertDiv = document.getElementById("alert");
+    alertDiv.firstElementChild.textContent = alert;
+    alertDiv.classList.remove("alert-hidden");
+
+    alertDiv.lastElementChild.addEventListener("click", () => {
+        alertDiv.classList.add("alert-hidden");
+
+        urlParams.delete('alert');
+        window.history.pushState({}, "", "?" + urlParams.toString());
+    });
+}

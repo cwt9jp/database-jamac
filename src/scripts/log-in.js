@@ -99,7 +99,8 @@ googleSignInButton.addEventListener("click", () => {
         .then((docSnap) => {
             if (!docSnap.exists()) {
                 return setDoc(doc(db, "users", user.uid), {
-                    access: 0
+                    access: 0,
+                    verified: user.emailVerified
                 });
             }
         })

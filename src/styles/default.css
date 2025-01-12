@@ -26,6 +26,10 @@ a:visited {
     color: purple;
 }
 
+button {
+    cursor: pointer;
+}
+
 nav *:focus {
     border-radius: 2px;
     outline: 2px solid black;
@@ -176,7 +180,6 @@ nav .login-element:active {
     border-right: none;
     border-left: none;
 
-    cursor: pointer;
 }
 
 #button-dropdown {
@@ -284,6 +287,7 @@ input[type="search"] {
     padding-inline: 30px 10px;
     width: 17vw;
     border: 1px solid rgb(109, 109, 109);
+    outline: none;
     background-color: white;
     border-radius: 5px;
 
@@ -298,4 +302,66 @@ input[type="search"] ~ img {
 
 input[type="search"]:hover, input[type="search"]:focus, input[type="search"]:active {
     background-color: rgb(241, 241, 241);
+}
+
+/* Alert styling */
+
+#alert {
+    position: absolute;
+    display: flex;
+    z-index: 1000;
+    top: 30px;
+    left: 0; 
+    right: 0; 
+
+    margin-inline: auto; 
+    max-width: 75vw;
+
+    background-color: rgb(85, 85, 85);
+    border-radius: 8px;
+    color: white;
+    opacity: 1;
+
+    transition:
+        top 0.5s ease-out,
+        opacity 0.5s ease-out;
+}
+
+#alert p {
+    padding-inline: 20px;
+}
+
+#alert button {
+    background-color: transparent;
+    border: none;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    margin-right: 10px;
+
+    margin-block: auto;
+    height: min-content;
+
+    transition: background-color 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+
+    & img {
+        display: block;
+        filter: brightness(0) invert(1);
+    }
+}
+
+#alert button:hover {
+    background-color: rgba(0, 0, 0, 0.174);
+
+    & img {
+        filter: invert(1);
+    }
+}
+
+#alert button:active {
+    background-color: rgba(0, 0, 0, 0.267);
+}
+
+#alert.alert-hidden {
+    top: 0;
+    opacity: 0;
 }

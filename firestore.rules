@@ -3,17 +3,17 @@ rules_version = '2';
 service cloud.firestore {
     match /databases/(default)/documents {
         match /users/{userID} {
-            allow read: if request.auth.uid == userID; // the user can read their own data
-            allow create: if request.auth.uid == userID && request.resource.data.access == 0; // the user can create a new user with access level 0
+            allow read: if (request.auth.uid == userID || get(/databases/(default)/documents/users/$(request.auth.uid)).data.access > 0); // the user can read their own data
+            allow create: if request.auth.uid == userID && request.resource.data.access == 0 && request.resource.data.verified == request.auth.token.email_verified; // the user can create a new user with access level 0
             allow update: if (
-                (get(/databases/(default)/documents/users/$(request.auth.uid)).data.access == 2 && resource.data.access < 2 && (request.resource.data.access is int && request.resource.data.access < 2)) ||
-                ((get(/databases/(default)/documents/users/$(request.auth.uid)).data.access == 3 && resource.data.access < 3 && (request.resource.data.access is int && request.resource.data.access < 3)))
+                (get(/databases/(default)/documents/users/$(request.auth.uid)).data.access == 2 && get(/databases/(default)/documents/users/$(request.resource.id)).data.verified == true && resource.data.access < 2 && (request.resource.data.access is int && request.resource.data.access < 2)) ||
+                ((get(/databases/(default)/documents/users/$(request.auth.uid)).data.access == 3 && get(/databases/(default)/documents/users/$(request.resource.id)).data.verified == true && resource.data.access < 3 && (request.resource.data.access is int && request.resource.data.access < 3)))
             ); // the user can update their own data if they are hacker and above and the new access level is less than their own
         }
         match /problems/{allPaths=**} {
             allow read: if (
-                resource.data.status == "used" || 
-                (get(/databases/(default)/documents/users/$(request.auth.uid)).data.access == 1 && resource.data.userID == request.auth.uid) ||
+                resource.data.status == "Used" || 
+                (get(/databases/(default)/documents/users/$(request.auth.uid)).data.access == 1 && resource.data.author == request.auth.uid) ||
                 get(/databases/(default)/documents/users/$(request.auth.uid)).data.access > 1
                 ); // the user can read a problem if it is used, if they have access level 1 and it is their problem, or if they have access level greater than 1
             allow create: if (
@@ -22,12 +22,16 @@ service cloud.firestore {
                 request.resource.data.difficulty >= 0 && request.resource.data.difficulty <= 10 &&
                 request.resource.data.name is string &&
                 request.resource.data.problem is string &&
+                (request.resource.data.diagram is string || !("diagram" in request.resource.data)) &&
                 request.resource.data.solution is string &&
-                (request.resource.data.status == "open" || (request.resource.data.status == "used" && get(/databases/(default)/documents/users/$(request.auth.uid)).data.access > 1)) &&
+                (request.resource.data.status == "Open" || (request.resource.data.status == "Used" && get(/databases/(default)/documents/users/$(request.auth.uid)).data.access > 1)) &&
                 request.resource.data.answer is string &&
                 request.resource.data.author == request.auth.uid &&
-                request.resource.data.created == request.time
-                ); // the user can create a new problem if they are not a noob, the problem is in a valid category, has a valid difficulty, has a valid name, problem, solution, status, answer, author, and created time
+                request.resource.data.displayname == request.auth.token.firebase.name &&
+                request.resource.data.created == request.time &&
+                !("updated" in request.resource.data) &&
+                request.resource.data.keywords is list
+                ); // the user can create a new problem if they are not a noob, the problem is in a valid category, has a valid difficulty, has a valid name, problem, solution, status, answer, author, keywords, and created time
             allow update: if (
                 get(/databases/(default)/documents/users/$(request.auth.uid)).data.access > 0 &&
                 (request.auth.uid == resource.data.author || get(/databases/(default)/documents/users/$(request.auth.uid)).data.access > 1) &&
@@ -35,12 +39,16 @@ service cloud.firestore {
                 request.resource.data.difficulty >= 0 && request.resource.data.difficulty <= 10 &&
                 request.resource.data.name is string &&
                 request.resource.data.problem is string &&
+                (request.resource.data.diagram is string || !("diagram" in request.resource.data)) &&
                 request.resource.data.solution is string &&
-                request.resource.data.status == "open" || ((request.resource.data.status == "active" || request.resource.data.status == "used") && get(/databases/(default)/documents/users/$(request.auth.uid)).data.access > 1) &&
+                request.resource.data.status == "Open" || ((request.resource.data.status == "Active" || request.resource.data.status == "Used") && get(/databases/(default)/documents/users/$(request.auth.uid)).data.access > 1) &&
                 request.resource.data.answer is string &&
-                request.resource.data.author == request.auth.uid &&
-                request.resource.data.updated == request.time
-                ); // the user can update a problem if they are not a noob, are the author of the problem or have access level higher than 1, and the problem is in a valid category, has a valid difficulty, has a valid name, problem, solution, status, answer, author, and updated time
+                !("author" in request.resource.data) &&
+                !("displayname" in request.resource.data) &&
+                !("created" in request.resource.data) &&
+                request.resource.data.updated == request.time &&
+                request.resource.data.keywords is list
+                ); // the user can update a problem if they are not a noob, are the author of the problem or have access level higher than 1, and the problem is in a valid category, has a valid difficulty, has a valid name, problem, solution, status, answer, author, keywords, and updated time
             allow delete: if (get(/databases/(default)/documents/users/$(request.auth.uid)).data.access > 1); // the user can delete a problem if they have access level greater than 1
         }
     }

@@ -19,6 +19,12 @@
     </head>
     <body>
         <script src="/src/scripts/nouislider.min.js"></script>
+        <div id="alert" class="alert-hidden">
+            <p></p>
+            <button type="button" title="Close alert">
+                <img src="/src/images/exit.svg" />
+            </button>
+        </div>
         <header>
             <nav>
                 <div class="left">
@@ -63,7 +69,7 @@
                             </li>
                         </ul>
                     </fieldset>
-                    <fieldset>
+                    <fieldset class="hidden" id="status-fieldset">
                         <legend>Status:</legend>
                         <ul>
                             <li>
@@ -84,19 +90,20 @@
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search" />
                         <img src="/src/images/search.svg" aria-hidden="true" />
                     </div>
-                    <div>
+                    <div id="filter-button-wrapper">
                         <button type="button" id="filter-submit">Filter</button>
+                        <button type="button" id="create-button" class="hidden">Create a problem</button>
                     </div>
                 </form>
             </aside>
             <article>
-                <h1 id="filter-results"></h1>
+                <h1 id="filter-results">Loading...</h1>
                 <div id="problem-wrapper"></div>
             </article>
         </main>
         <footer>
             <p>
-                &copy; 2024 Albemarle Math Club. Use of problems is allowed under the <a target="_blank" rel="noopener" href="https://opensource.org/license/mit">MIT License</a>.
+                &copy; 2025 Albemarle Math Club. Use of problems is allowed under the <a target="_blank" rel="noopener" href="https://opensource.org/license/mit">MIT License</a>.
             </p>
         </footer>
     </body>
