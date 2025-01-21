@@ -36,7 +36,7 @@ aside {
 }
 
 #filter-wrapper div:not(#difficulty-slider *, #difficulty-slider), #filter-wrapper fieldset {
-    margin: 20px 0px;
+    margin: 1.5vh 0;
     position: relative;
     padding: 0;
 }
@@ -104,25 +104,25 @@ aside {
 
 @property --submitLeftSide {
     syntax: '<color>';
-    initial-value: rgb(211, 79, 79);
+    initial-value: rgb(88, 88, 183);
     inherits: false;
 }
 
 @property --submitRightSide {
     syntax: '<color>';
-    initial-value: rgb(211, 79, 79);
+    initial-value: rgb(88, 88, 183);
     inherits: false;
 }
 
 @property --createLeftSide {
     syntax: '<color>';
-    initial-value: rgb(88, 88, 183);
+    initial-value: rgb(211, 79, 79);
     inherits: false;
 }
 
 @property --createRightSide {
     syntax: '<color>';
-    initial-value: rgb(88, 88, 183);
+    initial-value: rgb(211, 79, 79);
     inherits: false;
 }
 
@@ -140,6 +140,12 @@ aside {
     padding: 5px 15px;
 }
 
+#filter-wrapper #sort-radio-wrapper {
+    display: flex;
+    gap: 0.3vw;
+    margin-bottom: 10px;
+}
+
 #filter-submit {
     background: linear-gradient(90deg, var(--submitLeftSide), var(--submitRightSide));
 
@@ -149,13 +155,13 @@ aside {
 }
 
 #filter-submit:hover {
-    --submitRightSide: rgb(88, 88, 183);
+    --submitRightSide: rgb(211, 79, 79);
 }
 
 #filter-submit:active {
     font-weight: bold;
-    --submitLeftSide: rgb(88, 88, 183);
-    --submitRightSide: rgb(88, 88, 183);
+    --submitLeftSide: rgb(211, 79, 79);
+    --submitRightSide: rgb(211, 79, 79);
 }
 
 #create-button {
@@ -167,13 +173,13 @@ aside {
 }
 
 #create-button:hover {
-    --createLeftSide: rgb(211, 79, 79);
+    --createLeftSide: rgb(88, 88, 183);
 }
 
 #create-button:active {
     font-weight: bold;
-    --createLeftSide: rgb(211, 79, 79);
-    --createRightSide: rgb(211, 79, 79);
+    --createLeftSide: rgb(88, 88, 183);
+    --createRightSide: rgb(88, 88, 183);
 }
 
 /* Problem styling */
@@ -196,7 +202,9 @@ article h1 {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
     padding: 0 20px 10px 20px;
     border-radius: 10px;
-    flex: 100%;
+    flex: 1;
+
+    min-width: 200px;
 
     border-bottom-width: 5px;
     border-bottom-style: solid;
@@ -209,7 +217,7 @@ article h1 {
         flex 1s cubic-bezier(0.37, 0, 0.63, 1);
 }
 
-.problem:hover {
+.problem:hover, .problem:focus {
     border-bottom-width: 9px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
     cursor: pointer;
@@ -295,8 +303,8 @@ article h1 {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
 
     max-height: 1000px;
-    flex: 1;
     overflow: hidden;
+    flex: 100%;
 
     transition:
         max-height 1s cubic-bezier(0.37, 0, 0.63, 1),
@@ -329,6 +337,10 @@ article h1 {
     gap: 10px;
 }
 
+.new-problem .status-wrapper {
+    display: flex;
+}
+
 .new-problem .new-problem-footer button {
     border: none;
     color: white;
@@ -354,7 +366,22 @@ article h1 {
     background-color: rgb(52, 52, 109);
 }
 
-.new-problem input, .new-problem textarea, .new-problem select {
+.new-problem fieldset {
+    padding: 10px 0;
+    margin: 0;
+    border: none;
+}
+
+.new-problem fieldset input {
+    display: inline;
+    margin-inline: 15px 5px;
+}
+
+.new-problem legend {
+    float: left;
+}
+
+.new-problem input:not([type="radio"]), .new-problem textarea, .new-problem select {
     display: block;
     width: 100%;
     padding: 5px;

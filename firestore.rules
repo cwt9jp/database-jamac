@@ -27,9 +27,9 @@ service cloud.firestore {
                 (request.resource.data.status == "Open" || (request.resource.data.status == "Used" && get(/databases/(default)/documents/users/$(request.auth.uid)).data.access > 1)) &&
                 request.resource.data.answer is string &&
                 request.resource.data.author == request.auth.uid &&
-                request.resource.data.displayname == request.auth.token.firebase.name &&
+                request.resource.data.displayname is string &&
                 request.resource.data.created == request.time &&
-                !("updated" in request.resource.data) &&
+                request.resource.data.updated == request.time &&
                 request.resource.data.keywords is list
                 ); // the user can create a new problem if they are not a noob, the problem is in a valid category, has a valid difficulty, has a valid name, problem, solution, status, answer, author, keywords, and created time
             allow update: if (

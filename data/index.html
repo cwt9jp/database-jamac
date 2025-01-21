@@ -13,7 +13,7 @@
 
         <script type="module" src="/src/scripts/default.js"></script>
         <script type="module" src="/src/scripts/data.js"></script>
-        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
 
         <link rel="icon" href="/src/images/icon.ico" type="image/x-icon">
     </head>
@@ -85,6 +85,27 @@
                                 <label for="open-checkbox">Open</label>
                             </li>
                         </ul>
+                    </fieldset>
+                    <fieldset id="sort-fieldset">
+                        <legend>Sort by<span class="required">*</span>:</legend>
+                        <select name="sort-select" id="sort-select" required>
+                            <option value="category">Category</option>
+                            <option value="difficulty">Difficulty</option>
+                            <option value="name">Name</option>
+                            <option value="problem">Problem</option>
+                            <option value="solution">Solution</option>
+                            <option value="status">Status</option>
+                            <option value="answer">Answer</option>
+                            <option value="displayname">Author</option>
+                            <option value="created">First created</option>
+                            <option value="updated">Last updated</option>
+                        </select>
+                        <div id="sort-radio-wrapper">
+                            <label for="sort-radio-ascending">Ascending</label>
+                            <input type="radio" name="sort-radio" id="sort-radio-ascending" value="asc" checked>
+                            <label for="sort-radio-descending">Descending</label>
+                            <input type="radio" name="sort-radio" id="sort-radio-descending" value="desc">
+                        </div>
                     </fieldset>
                     <div>
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search" />

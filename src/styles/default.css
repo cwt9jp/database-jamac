@@ -247,6 +247,14 @@ textarea {
     box-sizing: border-box;
 }
 
+select {
+    display: block;
+    padding: 5px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid rgb(109, 109, 109);
+}
+
 input[type="checkbox"] {
     appearance: none;
 
@@ -256,13 +264,15 @@ input[type="checkbox"] {
     background-color: rgb(255, 255, 255);
 
     position: relative;
-    width: 1em;
-    height: 1em;
-    border: 1px solid gray;
-    border-radius: 3px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid gray;
+    border-radius: 5px;
     margin-left: 3px;
     /* Adjusts the position of the checkboxes on the text baseline */
     vertical-align: -3px;
+
+    cursor: pointer;
 
     transition: background-color 0.2s cubic-bezier(0.37, 0, 0.63, 1);
 
@@ -279,6 +289,43 @@ input[type="checkbox"]:not(:disabled):hover {
 input[type="checkbox"]:disabled {
     border-color: black;
     background-color:rgb(176, 176, 176);
+}
+
+
+input[type="radio"] {
+    appearance: none;
+
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 2px solid gray;
+    background-color: white;
+    /* Adjusts the position of the checkboxes on the text baseline */
+    vertical-align: -2px;
+    cursor: pointer;
+
+    transition: background-color 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+input[type="radio"]:not(:disabled):hover {
+    background-color: rgb(228, 228, 228);
+}
+
+input[type="radio"]::before {
+    display: block;
+    content: " ";
+    width: 10px;
+    height: 10px;
+    border-radius: 6px;
+    background-color: rgb(211, 79, 79);
+    font-size: 1.2em;
+    transform: translate(3px, 3px) scale(0);
+    transform-origin: center;
+}
+
+input[type="radio"]:checked::before {
+    transform: translate(3px, 3px) scale(1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 input[type="search"] {
@@ -304,6 +351,10 @@ input[type="search"]:hover, input[type="search"]:focus, input[type="search"]:act
     background-color: rgb(241, 241, 241);
 }
 
+.required {
+    color: red;
+}
+
 /* Alert styling */
 
 #alert {
@@ -315,8 +366,9 @@ input[type="search"]:hover, input[type="search"]:focus, input[type="search"]:act
     right: 0; 
 
     margin-inline: auto; 
+    width: fit-content;
     max-width: 75vw;
-
+    
     background-color: rgb(85, 85, 85);
     border-radius: 8px;
     color: white;
