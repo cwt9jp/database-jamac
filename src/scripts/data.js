@@ -303,7 +303,7 @@ onAuthStateChanged(auth, (user) => {
                             <option value="Number Theory">Number Theory</option>
                         </select>
                         <input type="number" id="difficulty-${temporaryID}" name="difficulty" min="0" max="10" required>
-                        <input type="text" id="name-${temporaryID}" name="name" placeholder="Name*" required>
+                        <input type="text" id="name-${temporaryID}" name="name" placeholder="Problem name*" required>
                     </div>
                     <label for="problem-${temporaryID}">Problem<span class="required">*</span>:</label>
                     <textarea id="problem-${temporaryID}" name="problem" required></textarea>
@@ -413,58 +413,60 @@ onAuthStateChanged(auth, (user) => {
                 q = query(q, where("status", "==", "Used"));
             }
         
-            // Apply filters
-            slider.noUiSlider.set([paramsDict.min, paramsDict.max]);
-            algebraCheckbox.checked = paramsDict.algebra === "true";
-            geometryCheckbox.checked = paramsDict.geometry === "true";
-            numberTheoryCheckbox.checked = paramsDict.numbertheory === "true";
-            usedCheckbox.checked = paramsDict.used === "true";
-            openCheckbox.checked = paramsDict.open === "true";
-            activeCheckbox.checked = paramsDict.active === "true";
-            sortSelect.value = paramsDict.sort;
-            sortRadioAsc.checked = paramsDict.sortdirection === "asc";
-            sortRadioDesc.checked = paramsDict.sortdirection === "desc";
+            if (paramsDict.min && paramsDict.max && paramsDict.algebra && paramsDict.geometry && paramsDict.numbertheory && paramsDict.used && paramsDict.open && paramsDict.active && paramsDict.sort && paramsDict.sortdirection && (typeof(paramsDict.keywords) === "string")) {
+                // Apply filters
+                slider.noUiSlider.set([paramsDict.min, paramsDict.max]);
+                algebraCheckbox.checked = paramsDict.algebra === "true";
+                geometryCheckbox.checked = paramsDict.geometry === "true";
+                numberTheoryCheckbox.checked = paramsDict.numbertheory === "true";
+                usedCheckbox.checked = paramsDict.used === "true";
+                openCheckbox.checked = paramsDict.open === "true";
+                activeCheckbox.checked = paramsDict.active === "true";
+                sortSelect.value = paramsDict.sort;
+                sortRadioAsc.checked = paramsDict.sortdirection === "asc";
+                sortRadioDesc.checked = paramsDict.sortdirection === "desc";
 
-            if (paramsDict.keywords != "") {
-                q = query(q, where("keywords", "array-contains-any", paramsDict.keywords.toLowerCase().split(" ")));
-            }
-
-            if (!(parseInt(paramsDict.min) == 0 && parseInt(paramsDict.max) == 10)) {
-                q = query(q, where("difficulty", ">=", parseInt(paramsDict.min)), where("difficulty", "<=", parseInt(paramsDict.max)));
-            }
-
-            if (categoryTrueCount == 1) {
-                q = query(q, where("category", "==", getKeyByValue(categoryDict, "true")));
-            }
-            else if (categoryTrueCount == 2) {
-                q = query(q, where("category", "!=", getKeyByValue(categoryDict, "false")));
-            }
-
-            if (access != 0) {
-                if (statusTrueCount == 1) {
-                    if (access == 1 && getKeyByValue(statusDict, "true") != "used") {
-                        q = query(q, where("author", "==", user.uid));
-                    }
-                    q = query(q, where("status", "==", getKeyByValue(statusDict, "true")));
+                if (paramsDict.keywords != "") {
+                    q = query(q, where("keywords", "array-contains-any", paramsDict.keywords.toLowerCase().split(" ")));
                 }
-                else if (statusTrueCount == 2) {
-                    if (access == 1) {
-                        if (getKeyByValue(statusDict, "false") == "used") {
+
+                if (!(parseInt(paramsDict.min) == 0 && parseInt(paramsDict.max) == 10)) {
+                    q = query(q, where("difficulty", ">=", parseInt(paramsDict.min)), where("difficulty", "<=", parseInt(paramsDict.max)));
+                }
+
+                if (categoryTrueCount == 1) {
+                    q = query(q, where("category", "==", getKeyByValue(categoryDict, "true")));
+                }
+                else if (categoryTrueCount == 2) {
+                    q = query(q, where("category", "!=", getKeyByValue(categoryDict, "false")));
+                }
+
+                if (access != 0) {
+                    if (statusTrueCount == 1) {
+                        if (access == 1 && getKeyByValue(statusDict, "true") != "used") {
                             q = query(q, where("author", "==", user.uid));
                         }
+                        q = query(q, where("status", "==", getKeyByValue(statusDict, "true")));
+                    }
+                    else if (statusTrueCount == 2) {
+                        if (access == 1) {
+                            if (getKeyByValue(statusDict, "false") == "used") {
+                                q = query(q, where("author", "==", user.uid));
+                            }
+                            else {
+                                q = query(q, or(where("status", "==", "used"), and(where("status", "==", getKeysByValue(statusDict, "true")[1]), where("author", "==", user.uid))));
+                            }
+                        }
                         else {
-                            q = query(q, or(where("status", "==", "used"), and(where("status", "==", getKeysByValue(statusDict, "true")[1]), where("author", "==", user.uid))));
+                            q = query(q, where("status", "!=", getKeyByValue(statusDict, "false")));
                         }
                     }
-                    else {
-                        q = query(q, where("status", "!=", getKeyByValue(statusDict, "false")));
+                    else if (access == 1) {
+                        q = query(q, or(where("author", "==", user.uid), where("status", "==", "used")));
                     }
                 }
-                else if (access == 1) {
-                    q = query(q, or(where("author", "==", user.uid), where("status", "==", "used")));
-                }
+                q = query(q, orderBy(paramsDict.sort, paramsDict.sortdirection), limit(20));
             }
-            q = query(q, orderBy(paramsDict.sort, paramsDict.sortdirection), limit(20));
             
             getDocs(q).then((querySnapshot) => {
     
@@ -477,6 +479,7 @@ onAuthStateChanged(auth, (user) => {
                 else if (querySnapshot.size == 20) {
                     filterResults.textContent = "20+ results";
                     var resultAmount = 20;
+                    var lastProblem = querySnapshot.docs[querySnapshot.size - 1];
                 }
                 else {
                     filterResults.textContent = querySnapshot.size + " results";
@@ -487,22 +490,27 @@ onAuthStateChanged(auth, (user) => {
                 if (resultAmount) {
                     window.addEventListener("scroll", () => {
                         if (((document.documentElement.scrollHeight - window.innerHeight) === window.scrollY) && resultAmount) {
-                            const lastProblem = querySnapshot.docs[querySnapshot.size - 1];
                             var newQuery = query(q, startAfter(lastProblem));
+
                             getDocs(newQuery).then((nextQuerySnapshot) => {
                                 if (nextQuerySnapshot.size == 0) {
+                                    console.log("if");
+                                    filterResults.textContent = `${resultAmount} results`
                                     resultAmount = null;
                                 }
-                                else if (querySnapshot.size == 20) {
+                                else if (nextQuerySnapshot.size == 20) {
+                                    console.log("else if");
                                     filterResults.textContent = `${resultAmount + 20}+ results`;
                                     resultAmount += 20;
+                                    lastProblem = nextQuerySnapshot.docs[nextQuerySnapshot.size - 1];
                                 }
                                 else {
-                                    filterResults.textContent = `${resultAmount + querySnapshot.size} results`;
+                                    console.log("else");
+                                    filterResults.textContent = `${resultAmount + nextQuerySnapshot.size} results`;
                                     resultAmount = null;
                                 }
 
-                                querySnapshot.forEach((nextDoc) => {showProblems(nextDoc)});
+                                nextQuerySnapshot.forEach((nextDoc) => {showProblems(nextDoc)});
                             });
                         }
                     });
