@@ -127,8 +127,8 @@ aside {
 }
 
 #filter-button-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
+    display: flex;
+    flex-wrap: wrap;
     width: 17vw;
     gap: 10px;
 }
@@ -148,6 +148,7 @@ aside {
 
 #filter-submit {
     background: linear-gradient(90deg, var(--submitLeftSide), var(--submitRightSide));
+    flex: 1;
 
     transition:
         --submitLeftSide 0.2s cubic-bezier(0.37, 0, 0.63, 1),
@@ -166,6 +167,7 @@ aside {
 
 #create-button {
     background: linear-gradient(90deg, var(--createLeftSide), var(--createRightSide));
+    flex: 3;
 
     transition:
         --createLeftSide 0.2s cubic-bezier(0.37, 0, 0.63, 1),
@@ -205,16 +207,19 @@ article h1 {
     flex: 1;
 
     min-width: 200px;
+    max-height: 1000px;
 
     border-bottom-width: 5px;
     border-bottom-style: solid;
 
     position: relative;
+    overflow: hidden;
 
     transition:
         border-bottom-width 0.2s cubic-bezier(0.37, 0, 0.63, 1),
         box-shadow 0.2s cubic-bezier(0.37, 0, 0.63, 1),
-        flex 1s cubic-bezier(0.37, 0, 0.63, 1);
+        flex 1s cubic-bezier(0.37, 0, 0.63, 1),
+        max-height 1s cubic-bezier(0.37, 0, 0.63, 1);
 }
 
 .problem:hover, .problem:focus {
@@ -294,6 +299,38 @@ article h1 {
     font-size: medium;
 }
 
+.problem .problem-button-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.problem .problem-button-wrapper button {
+    border: none;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 15px;
+    flex: 1;
+
+    transition: background-color 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.problem .problem-button-wrapper button:first-child {
+    background-color: rgb(211, 79, 79);
+}
+
+.problem .problem-button-wrapper button:first-child:hover {
+    background-color: rgb(132, 53, 53);
+}
+
+.problem .problem-button-wrapper button:last-child {
+    background-color: rgb(88, 88, 183);
+}
+
+.problem .problem-button-wrapper button:last-child:hover {
+    background-color: rgb(52, 52, 109);
+}
+
 /* New problem styling */
 
 .new-problem {
@@ -301,6 +338,7 @@ article h1 {
     padding: 10px 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    opacity: 1;
 
     max-height: 1000px;
     overflow: hidden;
@@ -308,7 +346,8 @@ article h1 {
 
     transition:
         max-height 1s cubic-bezier(0.37, 0, 0.63, 1),
-        flex 1s cubic-bezier(0.37, 0, 0.63, 1);
+        flex 1s cubic-bezier(0.37, 0, 0.63, 1),
+        opacity 0.2s cubic-bezier(0.37, 0, 0.63, 1);
 }
 
 .new-problem .new-problem-header {
@@ -397,4 +436,31 @@ article h1 {
 
 .error-message {
     color: red;
+}
+
+/* Edit problem styling */
+#screen-wrapper {
+    position: absolute;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    background-color:rgba(255, 255, 255, 0.477);
+    z-index: 10000;
+    opacity: 1;
+
+    transition: opacity 0.2s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+#screen-wrapper .new-problem {
+    position: relative;
+    left: 0; 
+    right: 0; 
+    top: 50%;
+
+    transform: translateY(-50%);
+    margin: auto; 
+
+    width: fit-content;
+
+    background-color: white;
 }

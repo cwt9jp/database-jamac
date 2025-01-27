@@ -18,7 +18,7 @@ Data has thirteen fields:
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
 import { getAuth, connectAuthEmulator, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { getFirestore, connectFirestoreEmulator, collection, query, where, getDocs, getDoc, doc, or, and, addDoc, serverTimestamp, limit, orderBy, startAfter } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { getFirestore, connectFirestoreEmulator, collection, query, where, getDocs, getDoc, doc, or, and, addDoc, serverTimestamp, limit, orderBy, startAfter, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 const firebaseConfig = {
     apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
     authDomain: "database-jamac.firebaseapp.com",
@@ -90,6 +90,17 @@ onAuthStateChanged(auth, (user) => {
         window.location.href = "/";
     }
     else {
+        const filterResults = document.getElementById('filter-results');
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramsDict = Object.fromEntries(urlParams.entries());
+        const categoryDict = {"Algebra": paramsDict.algebra, "Geometry": paramsDict.geometry, "Number Theory": paramsDict.numbertheory};
+        const categoryTrueCount = [paramsDict.algebra, paramsDict.geometry, paramsDict.numbertheory].filter(x => x === "true").length;
+        const statusDict = {"Used": paramsDict.used, "Open": paramsDict.open, "Active": paramsDict.active};
+        const statusTrueCount = [paramsDict.used, paramsDict.open, paramsDict.active].filter(x => x === "true").length;
+
+        const createButton = document.getElementById('create-button');
+        const problemWrapper = document.getElementById('problem-wrapper');
+
         function difficultyToColor(difficulty) {
             return `rgb(${(88*(10-difficulty) + 211*(difficulty))/10}, ${(88*(10-difficulty) + 79*(difficulty))/10}, ${(183*(10-difficulty) + 79*(difficulty))/10})`;
         }
@@ -121,6 +132,26 @@ onAuthStateChanged(auth, (user) => {
             }
         }
 
+        function checkSpecialChars(i) {
+            if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(i[i.length - 1])) {
+                i = i.slice(0, -1);
+            }
+            if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(i[0])) {
+                i = i.slice(1);
+            }
+            return i;
+        }
+
+        function checkForKeywords(possibleKeywords, keywords) {
+            possibleKeywords.forEach((i) => {
+                i = checkSpecialChars(i);
+                if (!keywords.includes(i)) {
+                    keywords.push(i);
+                }
+            });
+            return keywords;
+        }
+
         function addEventListeners(temporaryID, access) {
             // Show status-wrapper if access is high enough
             if (access > 1) {
@@ -140,7 +171,7 @@ onAuthStateChanged(auth, (user) => {
             });
 
             // Submit button
-            const submitButton = document.getElementsByClassName(`submit-button-${temporaryID}`)[0];
+            const submitButton = document.getAnimations(`submit-button-${temporaryID}`);
             const category = document.getElementById(`category-${temporaryID}`);
             const difficulty = document.getElementById(`difficulty-${temporaryID}`);
             const name = document.getElementById(`name-${temporaryID}`);
@@ -209,146 +240,309 @@ onAuthStateChanged(auth, (user) => {
 
                 var keywords = [];
 
-                function checkSpecialChars(i) {
-                    if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(i[i.length - 1])) {
-                        i = i.slice(0, -1);
-                    }
-                    if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(i[0])) {
-                        i = i.slice(1);
-                    }
-                    return i;
+                keywords = checkForKeywords(name.value.toLowerCase().split(" "), keywords);
+                keywords = checkForKeywords(problem.value.toLowerCase().split(" "), keywords);
+                keywords = checkForKeywords(solution.value.toLowerCase().split(" "), keywords);
+                keywords = checkForKeywords(answer.value.toLowerCase().split(" "), keywords);
+                keywords.push(user.displayName);
+
+                let data = {
+                    category: category.value,
+                    difficulty: parseInt(difficulty.value),
+                    name: name.value,
+                    problem: problem.value,
+                    solution: solution.value,
+                    status: document.querySelector(`input[name="status-${temporaryID}"]:checked`).value,
+                    answer: answer.value,
+                    displayname: user.displayName,
+                    author: user.uid,
+                    created: serverTimestamp(),
+                    updated: serverTimestamp(),
+                    keywords: keywords
                 }
 
-                function checkForKeywords(possibleKeywords, keywords) {
-                    possibleKeywords.forEach((i) => {
-                        i = checkSpecialChars(i);
-                        if (!keywords.includes(i)) {
-                            keywords.push(i);
-                        }
-                    });
-                    return keywords;
-                }
+                if (diagram.value) data.diagram = diagram.value;
 
-                    keywords = checkForKeywords(name.value.toLowerCase().split(" "), keywords);
-                    keywords = checkForKeywords(problem.value.toLowerCase().split(" "), keywords);
-                    keywords = checkForKeywords(solution.value.toLowerCase().split(" "), keywords);
-                    keywords = checkForKeywords(answer.value.toLowerCase().split(" "), keywords);
-                    keywords.push(user.displayName);
+                addDoc(collection(db, "problems"), data)
+                .then(() => {
+                    const params = new URLSearchParams(window.location.search);
+                    params.set("alert", "Problem successfully created.");
+                    localStorage.removeItem(`problem-${temporaryID}`);
+                    window.location.href = '?' + params.toString();
 
-                    let data = {
-                        category: category.value,
-                        difficulty: parseInt(difficulty.value),
-                        name: name.value,
-                        problem: problem.value,
-                        solution: solution.value,
-                        status: document.querySelector(`input[name="status-${temporaryID}"]:checked`).value,
-                        answer: answer.value,
-                        displayname: user.displayName,
-                        author: user.uid,
-                        created: serverTimestamp(),
-                        updated: serverTimestamp(),
-                        keywords: keywords
-                    }
-
-                    if (diagram.value) data.diagram = diagram.value;
-
-                    addDoc(collection(db, "problems"), data)
-                    .then(() => {
-                        const params = new URLSearchParams(window.location.search);
-                        params.set("alert", "Problem successfully created.");
-                        localStorage.removeItem(`problem-${temporaryID}`);
-                        window.location.href = '?' + params.toString();
-    
-                    }).catch((e) => {
-                        errorMessage.textContent = `Error: ${e.message}`;
-                    })
-
-                });
-
-                // Autosave feature
-                problem.addEventListener("change", () => {
-                    saveData();
-                })
-                solution.addEventListener("change", () => {
-                    saveData();
-                })
-                name.addEventListener("change", () => {
-                    saveData();
+                }).catch((e) => {
+                    errorMessage.textContent = `Error: ${e.message}`;
                 })
 
-                // Creation transition
-                newProblem.scrollWidth;
-                newProblem.style = "";
-            }
+            });
 
-        const filterResults = document.getElementById('filter-results');
-        const urlParams = new URLSearchParams(window.location.search);
-        const paramsDict = Object.fromEntries(urlParams.entries());
-        const categoryDict = {"Algebra": paramsDict.algebra, "Geometry": paramsDict.geometry, "Number Theory": paramsDict.numbertheory};
-        const categoryTrueCount = [paramsDict.algebra, paramsDict.geometry, paramsDict.numbertheory].filter(x => x === "true").length;
-        const statusDict = {"Used": paramsDict.used, "Open": paramsDict.open, "Active": paramsDict.active};
-        const statusTrueCount = [paramsDict.used, paramsDict.open, paramsDict.active].filter(x => x === "true").length;
-
-        const createButton = document.getElementById('create-button');
-        const problemWrapper = document.getElementById('problem-wrapper');
+            // Autosave feature
+            problem.addEventListener("change", () => {
+                saveData();
+            })
+            solution.addEventListener("change", () => {
+                saveData();
+            })
+            name.addEventListener("change", () => {
+                saveData();
+            })
+        }
 
         function addProblem(temporaryID) {
             problemWrapper.insertAdjacentHTML('afterbegin',
-                `<form class="new-problem" id="${temporaryID}" novalidate style="max-height: 0px; flex: 0;">
-                    <div class="new-problem-header">
-                        <select id="category-${temporaryID}" name="category" required>
-                            <option value="" disabled selected>Category*</option>
-                            <option value="Algebra">Algebra</option>
-                            <option value="Geometry">Geometry</option>
-                            <option value="Number Theory">Number Theory</option>
-                        </select>
-                        <input type="number" id="difficulty-${temporaryID}" name="difficulty" min="0" max="10" required>
-                        <input type="text" id="name-${temporaryID}" name="name" placeholder="Problem name*" required>
-                    </div>
-                    <label for="problem-${temporaryID}">Problem<span class="required">*</span>:</label>
-                    <textarea id="problem-${temporaryID}" name="problem" required></textarea>
-                    <label for="diagram-${temporaryID}">Diagram link:</label>
-                    <input type="url" id="diagram-${temporaryID}" name="diagram">
-                    <label for="solution-${temporaryID}">Solution<span class="required">*</span>:</label>
-                    <textarea id="solution-${temporaryID}" name="solution" required></textarea>
-                    <label for="answer-${temporaryID}">Answer<span class="required">*</span>:</label>
-                    <input type="text" id="answer-${temporaryID}" name="answer" required>
-                    <p class="error-message" id="error-message-${temporaryID}"></p>
-                    <fieldset id="status-wrapper-${temporaryID}" class="hidden status-wrapper">
-                        <legend>Status<span class="required">*</span>:</legend>
-                        <input type="radio" id="status-used-${temporaryID}" name="status-${temporaryID}" value="Used">
-                        <label for="status-used-${temporaryID}">Used</label>
-                        <input type="radio" id="status-active-${temporaryID}" name="status-${temporaryID}" value="Open" checked>
-                        <label for="status-active-${temporaryID}">Open</label>
-                    </fieldset>
-                    <div class="new-problem-footer">
-                        <button type="button" id="cancel-button-${temporaryID}" title="Cancel problem">Cancel</button>
-                        <button type="button" class="submit-button-${temporaryID}" title="Submit problem">Submit</button>
-                    </div>
-                </form>`);
+            `<form class="new-problem" id="${temporaryID}" novalidate style="max-height: 0px; flex: 0;">
+                <div class="new-problem-header">
+                    <select id="category-${temporaryID}" name="category" required>
+                        <option value="" disabled selected>Category*</option>
+                        <option value="Algebra">Algebra</option>
+                        <option value="Geometry">Geometry</option>
+                        <option value="Number Theory">Number Theory</option>
+                    </select>
+                    <input type="number" id="difficulty-${temporaryID}" name="difficulty" min="0" max="10" required>
+                    <input type="text" id="name-${temporaryID}" name="name" placeholder="Problem name*" required>
+                </div>
+                <label for="problem-${temporaryID}">Problem<span class="required">*</span>:</label>
+                <textarea id="problem-${temporaryID}" name="problem" required></textarea>
+                <label for="diagram-${temporaryID}">Diagram link:</label>
+                <input type="url" id="diagram-${temporaryID}" name="diagram">
+                <label for="solution-${temporaryID}">Solution<span class="required">*</span>:</label>
+                <textarea id="solution-${temporaryID}" name="solution" required></textarea>
+                <label for="answer-${temporaryID}">Answer<span class="required">*</span>:</label>
+                <input type="text" id="answer-${temporaryID}" name="answer" required>
+                <fieldset id="status-wrapper-${temporaryID}" class="hidden status-wrapper">
+                    <legend>Status<span class="required">*</span>:</legend>
+                    <input type="radio" id="status-used-${temporaryID}" name="status-${temporaryID}" value="Used">
+                    <label for="status-used-${temporaryID}">Used</label>
+                    <input type="radio" id="status-active-${temporaryID}" name="status-${temporaryID}" value="Open" checked>
+                    <label for="status-active-${temporaryID}">Open</label>
+                </fieldset>
+                <p class="error-message" id="error-message-${temporaryID}"></p>
+                <div class="new-problem-footer">
+                    <button type="button" id="cancel-button-${temporaryID}" title="Cancel problem">Cancel</button>
+                    <button type="button" id="submit-button-${temporaryID}" title="Submit problem">Submit</button>
+                </div>
+            </form>`);
+            // Creation transition
+            const newProblem = document.getElementById(temporaryID);
+            newProblem.scrollWidth;
+            newProblem.style = "";
         }
 
-        function showProblems(doc) {
-            // doc.data() is never undefined for query doc snapshots
+        function showProblems(d, access) {
+            // d.data() is never undefined for query doc snapshots
             problemWrapper.insertAdjacentHTML('beforeend', 
-                `<div id="${doc.id}" class="problem" style="border-bottom-color: ${difficultyToColor(doc.data().difficulty)}" tabindex="0">
+                `<div id="${d.id}" class="problem" style="border-bottom-color: ${difficultyToColor(d.data().difficulty)}" tabindex="0">
                     <button type="button" class="contract-button" title="Contract problem">
                         <img src="/src/images/exit.svg" />
                     </button>
-                    <h2>${doc.data().category} &centerdot; ${doc.data().difficulty} &centerdot; ${doc.data().status} &centerdot; ${doc.data().name}</h2>
-                    <p>${doc.data().problem}</p>
-                    ${doc.data().diagram != null ? `<img src="${doc.data().diagram}" alt="Diagram" />` : ""}
+                    <h2>${d.data().category} &centerdot; ${d.data().difficulty} &centerdot; ${d.data().status} &centerdot; ${d.data().name}</h2>
+                    <p>${d.data().problem}</p>
+                    ${d.data().diagram != null ? `<img src="${d.data().diagram}" alt="Diagram" />` : ""}
                     <div>
-                        <p>Solution: ${doc.data().solution}</p>
+                        <p>Solution: ${d.data().solution}</p>
                         <small>
-                            Answer: ${doc.data().answer} &centerdot;
-                            Problem by ${doc.data().displayname} &centerdot;
-                            Created ${doc.data().created.toDate()}
-                            ${doc.data().updated != null ? `&centerdot; Updated ${doc.data().updated.toDate()}` : ""}</small>
+                            Answer: ${d.data().answer} &centerdot;
+                            Problem by ${d.data().displayname} &centerdot;
+                            Created ${d.data().created.toDate()}
+                            ${d.data().updated != null ? `&centerdot; Updated ${d.data().updated.toDate()}` : ""}
+                        </small>
+                        ${access > 1 || d.data().author === user.uid ? `
+                        <p id="error-message-${d.id}" class="error-message"></p>
+                        <div class="problem-button-wrapper">
+                            <button type="button" id="delete-button-${d.id}">Delete</button>
+                            <button type="button" id="edit-button-${d.id}">Edit</button>
+                        </div>
+                        ` : ""
+                        }
                     </div>
                 </div>`
             );
-            let problem = document.getElementById(doc.id);
+
+            if (access > 1 || d.data().author === user.uid) {
+                // Edit and delete buttons
+                const deleteButton = document.getElementById(`delete-button-${d.id}`);
+                const editButton = document.getElementById(`edit-button-${d.id}`);
+                const errorMessage = document.getElementById(`error-message-${d.id}`);
+                const problem = document.getElementById(d.id);
+                const screenWrapper = document.getElementById("screen-wrapper");
+                let confirm = false;
+
+                deleteButton.addEventListener("click", () => {
+                    if (confirm) {
+                        deleteDoc(doc(db, "problems", d.id))
+                        .then(() => {
+                            problem.style.maxHeight = "0px";
+                            problem.style.flex = "0";
+                            setTimeout(() => {
+                                problem.remove();
+                                const params = new URLSearchParams(window.location.search);
+                                params.set("alert", "Problem successfully deleted.");
+                                window.location.href = "?" + params.toString();
+                            }, 1000)
+                        })
+                        .catch((e) => {
+                            errorMessage.textContent = `Error: ${e.message}`;
+                        })
+                    }
+                    else {
+                        confirm = true;
+                        errorMessage.textContent = "Press delete again to confirm.";
+                        setTimeout(() => {
+                            confirm = false;
+                            errorMessage.textContent = "";
+                        }, 5000);
+                    }
+                });
+
+                editButton.addEventListener("click", () => {
+                    const editID = d.id + "-edit";
+
+                    screenWrapper.insertAdjacentHTML('afterbegin',
+                    `<form class="new-problem" id="${editID}" novalidate style="opacity: 0;">
+                        <div class="new-problem-header">
+                            <select id="category-${editID}" name="category" required>
+                                <option value="" disabled selected>Category*</option>
+                                <option value="Algebra">Algebra</option>
+                                <option value="Geometry">Geometry</option>
+                                <option value="Number Theory">Number Theory</option>
+                            </select>
+                            <input type="number" id="difficulty-${editID}" name="difficulty" min="0" max="10" required>
+                            <input type="text" id="name-${editID}" name="name" placeholder="Problem name*" required>
+                        </div>
+                        <label for="problem-${editID}">Problem<span class="required">*</span>:</label>
+                        <textarea id="problem-${editID}" name="problem" required></textarea>
+                        <label for="diagram-${editID}">Diagram link:</label>
+                        <input type="url" id="diagram-${editID}" name="diagram">
+                        <label for="solution-${editID}">Solution<span class="required">*</span>:</label>
+                        <textarea id="solution-${editID}" name="solution" required></textarea>
+                        <label for="answer-${editID}">Answer<span class="required">*</span>:</label>
+                        <input type="text" id="answer-${editID}" name="answer" required>
+                        <fieldset id="status-wrapper-${editID}" class="hidden status-wrapper">
+                            <legend>Status<span class="required">*</span>:</legend>
+                            <input type="radio" id="status-used-${editID}" name="status-${editID}" value="Used">
+                            <label for="status-used-${editID}">Used</label>
+                            <input type="radio" id="status-active-${editID}" name="status-${editID}" value="Open" checked>
+                            <label for="status-active-${editID}">Open</label>
+                        </fieldset>
+                        <p class="error-message" id="error-message-${editID}"></p>
+                        <div class="new-problem-footer">
+                            <button type="button" id="cancel-button-${editID}" title="Cancel problem">Cancel</button>
+                            <button type="button" id="submit-button-${editID}" title="Submit problem">Submit</button>
+                        </div>
+                    </form>`);
+                    
+                    // const submitButton = document.getElementById(`submit-button-${temporaryID}`);
+                    const category = document.getElementById(`category-${editID}`);
+                    const difficulty = document.getElementById(`difficulty-${editID}`);
+                    const name = document.getElementById(`name-${editID}`);
+                    const problem = document.getElementById(`problem-${editID}`);
+                    const diagram = document.getElementById(`diagram-${editID}`);
+                    const solution = document.getElementById(`solution-${editID}`);
+                    const answer = document.getElementById(`answer-${editID}`);
+                    const errorMessage = document.getElementById(`error-message-${editID}`);
+                    let confirm = false;
+
+                    difficulty.value = d.data().difficulty;
+                    category.value = d.data().category;
+                    name.value = d.data().name;
+                    problem.value = d.data().problem;
+                    diagram.value = d.data().diagram ? d.data().diagram : "";
+                    solution.value = d.data().solution;
+                    answer.value = d.data().answer;
+                    document.querySelector(`input[name="status-${editID}"][value="${d.data().status}"]`).checked = true;
+
+                    if (access > 1) document.getElementById(`status-wrapper-${editID}`).classList.remove("hidden");
+                    
+                    const editProblem = document.getElementById(editID);
+
+                    screenWrapper.classList.remove("hidden");
+                    editProblem.scrollWidth;
+                    editProblem.style.opacity = "";
+
+                    // Cancel and submit buttons INSIDE editProblem form
+                    const cancelButton = document.getElementById(`cancel-button-${editID}`);
+                    const submitButton = document.getElementById(`submit-button-${editID}`);
+
+                    cancelButton.addEventListener("click", () => {
+                        editProblem.style.opacity = "0";
+
+                        setTimeout(() => {
+                            screenWrapper.classList.add("hidden");
+                            editProblem.remove();
+                        }, 200);
+                    });
+
+                    submitButton.addEventListener("click", () => {
+                        if (!category.checkValidity()) {
+                            errorMessage.textContent = "Please select a category";
+                            return;
+                        }
+                        if (!difficulty.checkValidity()) {
+                            errorMessage.textContent = "Please enter a difficulty between 0 and 10";
+                            return;
+                        }
+                        if (!name.checkValidity()) {
+                            errorMessage.textContent = "Please enter a name";
+                            return;
+                        }
+                        if (!problem.checkValidity()) {
+                            errorMessage.textContent = "Please enter a problem";
+                            return;
+                        }
+                        if (!diagram.checkValidity()) {
+                            errorMessage.textContent = "Please enter a valid diagram link";
+                            return;
+                        }
+                        if (!solution.checkValidity()) {
+                            errorMessage.textContent = "Please enter a solution";
+                            return;
+                        }
+                        if (!answer.checkValidity()) {
+                            errorMessage.textContent = "Please enter an answer";
+                            return;
+                        }
+                        if (!confirm) {
+                            errorMessage.textContent = "Please press submit again to confirm."
+                            confirm = true;
+                            return;
+                        }
+
+                        let keywords = [];
+                        keywords = checkForKeywords(name.value.toLowerCase().split(" "), keywords);
+                        keywords = checkForKeywords(problem.value.toLowerCase().split(" "), keywords);
+                        keywords = checkForKeywords(solution.value.toLowerCase().split(" "), keywords);
+                        keywords = checkForKeywords(answer.value.toLowerCase().split(" "), keywords);
+                        keywords.push(user.displayName);
+
+                        let data = {
+                            category: category.value,
+                            difficulty: parseInt(difficulty.value),
+                            name: name.value,
+                            problem: problem.value,
+                            solution: solution.value,
+                            status: document.querySelector(`input[name="status-${editID}"]:checked`).value,
+                            answer: answer.value,
+                            displayname: user.displayName,
+                            updated: serverTimestamp(),
+                            keywords: keywords
+                        }
+    
+                        if (diagram.value) data.diagram = diagram.value;
+
+                        setDoc(doc(db, "problems", d.id), data, {merge: true})
+                        .then(() => {
+                            const params = new URLSearchParams(window.location.search);
+                            params.set("alert", "Problem successfully modified.");
+                            window.location.href = '?' + params.toString();
+                        })
+                        .catch((e) => {
+                            errorMessage.textContent = "Error: " + e.message;
+                            confirm = false;
+                        })
+                    })
+                });
+            }
+            let problem = document.getElementById(d.id);
             problem.addEventListener('click', () => {
                 problem.classList.add("expanded");
             });
@@ -485,7 +679,7 @@ onAuthStateChanged(auth, (user) => {
                     filterResults.textContent = querySnapshot.size + " results";
                 }
     
-                querySnapshot.forEach((doc) => {showProblems(doc)});
+                querySnapshot.forEach((doc) => {showProblems(doc, access)});
                 
                 if (resultAmount) {
                     window.addEventListener("scroll", () => {
@@ -510,7 +704,7 @@ onAuthStateChanged(auth, (user) => {
                                     resultAmount = null;
                                 }
 
-                                nextQuerySnapshot.forEach((nextDoc) => {showProblems(nextDoc)});
+                                nextQuerySnapshot.forEach((nextDoc) => {showProblems(nextDoc, access)});
                             });
                         }
                     });
