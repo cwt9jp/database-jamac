@@ -168,7 +168,7 @@ onAuthStateChanged(auth, (user) => {
             });
 
             // Submit button
-            const submitButton = document.getAnimations(`submit-button-${temporaryID}`);
+            const submitButton = document.getElementById(`submit-button-${temporaryID}`);
             const category = document.getElementById(`category-${temporaryID}`);
             const difficulty = document.getElementById(`difficulty-${temporaryID}`);
             const name = document.getElementById(`name-${temporaryID}`);
