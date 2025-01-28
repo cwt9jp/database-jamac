@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
-import { getAuth, connectAuthEmulator, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getFirestore, connectFirestoreEmulator,  setDoc, doc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -25,8 +25,6 @@ const buttonDropdown = document.getElementById("button-dropdown");
 const signOutButton = document.getElementById("sign-out");
 const databaseLink = document.getElementById("database-link");
 const guideLink = document.getElementById("guide-link");
-
-connectAuthEmulator(auth, "http://127.0.0.1:9099");
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
