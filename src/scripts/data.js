@@ -17,8 +17,8 @@ Data has thirteen fields:
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
-import { getAuth, connectAuthEmulator, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { getFirestore, connectFirestoreEmulator, collection, query, where, getDocs, getDoc, doc, or, and, addDoc, serverTimestamp, limit, orderBy, startAfter, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs, getDoc, doc, or, and, addDoc, serverTimestamp, limit, orderBy, startAfter, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 const firebaseConfig = {
     apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
     authDomain: "database-jamac.firebaseapp.com",
@@ -36,9 +36,6 @@ const auth = getAuth();
 auth.useDeviceLanguage();
 
 const db = getFirestore();
-connectFirestoreEmulator(db, "127.0.0.1", 8081);
-
-connectAuthEmulator(auth, "http://127.0.0.1:9099");
 
 // Slider
 var slider = document.getElementById('difficulty-slider');
