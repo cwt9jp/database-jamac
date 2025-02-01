@@ -358,7 +358,7 @@ input[type="search"]:hover, input[type="search"]:focus, input[type="search"]:act
 /* Alert styling */
 
 #alert {
-    position: absolute;
+    position: fixed;
     display: flex;
     z-index: 1000;
     top: 30px;
