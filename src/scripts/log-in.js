@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
-import { getAuth, connectAuthEmulator, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { getFirestore, connectFirestoreEmulator, setDoc, doc, getDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getFirestore, setDoc, doc, getDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
@@ -22,7 +22,6 @@ let loggingIn = false;
 // If already signed in: redirect user
 const auth = getAuth();
 auth.useDeviceLanguage();
-connectAuthEmulator(auth, "http://127.0.0.1:9099");
 onAuthStateChanged(auth, (user) => {
     if (user && !loggingIn) {
         window.location.href = '/';
@@ -84,7 +83,6 @@ const provider = new GoogleAuthProvider();
 googleSignInButton.addEventListener("click", () => {
     // Initialize Firestore
     const db = getFirestore();
-    connectFirestoreEmulator(db, "127.0.0.1", 8081);
     loggingIn = true;
 
     signInWithPopup(auth, provider)
