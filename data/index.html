@@ -59,15 +59,15 @@
                         <legend>Category:</legend>
                         <ul>
                             <li>
-                                <input type="checkbox" id="algebra-checkbox" name="algebra-checkbox" value="checked" />
+                                <input type="checkbox" id="algebra-checkbox" name="algebra" value="checked" />
                                 <label for="algebra-checkbox">Algebra</label>
                             </li>
                             <li>
-                                <input type="checkbox" id="geometry-checkbox" name="geometry-checkbox" value="checked" />
+                                <input type="checkbox" id="geometry-checkbox" name="geometry" value="checked" />
                                 <label for="geometry-checkbox">Geometry</label>
                             </li>
                             <li>
-                                <input type="checkbox" id="number-theory-checkbox" name="number-theory-checkbox" value="checked" />
+                                <input type="checkbox" id="number-theory-checkbox" name="numbertheory" value="checked" />
                                 <label for="number-theory-checkbox">Number Theory</label>
                             </li>
                         </ul>
@@ -76,22 +76,22 @@
                         <legend>Status:</legend>
                         <ul>
                             <li>
-                                <input type="checkbox" id="used-checkbox" name="used-checkbox" value="checked" />
+                                <input type="checkbox" id="used-checkbox" name="used" value="checked" />
                                 <label for="used-checkbox">Used</label>
                             </li>
                             <li>
-                                <input type="checkbox" id="active-checkbox" name="active-checkbox" value="checked" />
+                                <input type="checkbox" id="active-checkbox" name="active" value="checked" />
                                 <label for="active-checkbox">Active</label>
                             </li>
                             <li>
-                                <input type="checkbox" id="open-checkbox" name="open-checkbox" value="checked" />
+                                <input type="checkbox" id="open-checkbox" name="open" value="checked" />
                                 <label for="open-checkbox">Open</label>
                             </li>
                         </ul>
                     </fieldset>
                     <fieldset id="sort-fieldset">
                         <legend>Sort by<span class="required">*</span>:</legend>
-                        <select name="sort-select" id="sort-select" required>
+                        <select name="sort" id="sort-select" required>
                             <option value="category">Category</option>
                             <option value="difficulty">Difficulty</option>
                             <option value="name">Name</option>
@@ -105,17 +105,17 @@
                         </select>
                         <div id="sort-radio-wrapper">
                             <label for="sort-radio-ascending">Ascending</label>
-                            <input type="radio" name="sort-radio" id="sort-radio-ascending" value="asc" checked>
+                            <input type="radio" name="sortdirection" id="sort-radio-ascending" value="asc" checked>
                             <label for="sort-radio-descending">Descending</label>
-                            <input type="radio" name="sort-radio" id="sort-radio-descending" value="desc">
+                            <input type="radio" name="sortdirection" id="sort-radio-descending" value="desc">
                         </div>
                     </fieldset>
                     <div>
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search" />
+                        <input type="search" id="searchbar" name="keywords" placeholder="Search" />
                         <img src="/src/images/search.svg" aria-hidden="true" />
                     </div>
                     <div id="filter-button-wrapper">
-                        <button type="button" id="filter-submit">Filter</button>
+                        <button type="submit" id="filter-submit">Filter</button>
                         <button type="button" id="create-button" class="hidden">Create a problem</button>
                     </div>
                 </form>

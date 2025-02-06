@@ -66,21 +66,21 @@ const searchbar = document.getElementById('searchbar');
 const filterSubmit = document.getElementById('filter-submit');
 
 
-filterSubmit.addEventListener('click', () => {
-    const params = new URLSearchParams();
-    params.append('min', slider.noUiSlider.get()[0]);
-    params.append('max', slider.noUiSlider.get()[1]);
-    params.append('algebra', algebraCheckbox.checked);
-    params.append('geometry', geometryCheckbox.checked);
-    params.append('numbertheory', numberTheoryCheckbox.checked);
-    params.append('used', usedCheckbox.checked);
-    params.append('open', openCheckbox.checked);
-    params.append('active', activeCheckbox.checked);
-    params.append('sort', sortSelect.value);
-    params.append('sortdirection', document.querySelector(`input[name="sort-radio"]:checked`).value);
-    params.append('keywords', searchbar.value);
-    window.location.href = "?" + params.toString();
-});
+// filterSubmit.addEventListener('click', () => {
+//     const params = new URLSearchParams();
+//     params.append('min', slider.noUiSlider.get()[0]);
+//     params.append('max', slider.noUiSlider.get()[1]);
+//     params.append('algebra', algebraCheckbox.checked);
+//     params.append('geometry', geometryCheckbox.checked);
+//     params.append('numbertheory', numberTheoryCheckbox.checked);
+//     params.append('used', usedCheckbox.checked);
+//     params.append('open', openCheckbox.checked);
+//     params.append('active', activeCheckbox.checked);
+//     params.append('sort', sortSelect.value);
+//     params.append('sortdirection', document.querySelector(`input[name="sortdirection"]:checked`).value);
+//     params.append('keywords', searchbar.value);
+//     window.location.href = "?" + params.toString();
+// });
 
 onAuthStateChanged(auth, (user) => {
     if (!user) {
@@ -604,60 +604,60 @@ onAuthStateChanged(auth, (user) => {
                 q = query(q, where("status", "==", "Used"));
             }
         
-            if (paramsDict.min && paramsDict.max && paramsDict.algebra && paramsDict.geometry && paramsDict.numbertheory && paramsDict.used && paramsDict.open && paramsDict.active && paramsDict.sort && paramsDict.sortdirection && (typeof(paramsDict.keywords) === "string")) {
-                // Apply filters
-                slider.noUiSlider.set([paramsDict.min, paramsDict.max]);
-                algebraCheckbox.checked = paramsDict.algebra === "true";
-                geometryCheckbox.checked = paramsDict.geometry === "true";
-                numberTheoryCheckbox.checked = paramsDict.numbertheory === "true";
-                usedCheckbox.checked = paramsDict.used === "true";
-                openCheckbox.checked = paramsDict.open === "true";
-                activeCheckbox.checked = paramsDict.active === "true";
-                sortSelect.value = paramsDict.sort;
-                sortRadioAsc.checked = paramsDict.sortdirection === "asc";
-                sortRadioDesc.checked = paramsDict.sortdirection === "desc";
+            // Apply filters
+            if (paramsDict.min && paramsDict.max) slider.noUiSlider.set([paramsDict.min, paramsDict.max]);
+            algebraCheckbox.checked = paramsDict.algebra === "true";
+            geometryCheckbox.checked = paramsDict.geometry === "true";
+            numberTheoryCheckbox.checked = paramsDict.numbertheory === "true";
+            usedCheckbox.checked = paramsDict.used === "true";
+            openCheckbox.checked = paramsDict.open === "true";
+            activeCheckbox.checked = paramsDict.active === "true";
+            if (paramsDict.sort) sortSelect.value = paramsDict.sort;
+            sortRadioAsc.checked = paramsDict.sortdirection === "asc";
+            sortRadioDesc.checked = paramsDict.sortdirection === "desc";
+            if (paramsDict.keywords) searchbar.value = paramsDict.keywords;
 
-                if (paramsDict.keywords != "") {
-                    q = query(q, where("keywords", "array-contains-any", paramsDict.keywords.toLowerCase().split(" ")));
-                }
+            if (paramsDict.keywords && paramsDict != "") {
+                q = query(q, where("keywords", "array-contains-any", paramsDict.keywords.toLowerCase().split(" ")));
+            }
 
-                if (!(parseInt(paramsDict.min) == 0 && parseInt(paramsDict.max) == 10)) {
-                    q = query(q, where("difficulty", ">=", parseInt(paramsDict.min)), where("difficulty", "<=", parseInt(paramsDict.max)));
-                }
+            if (!(parseInt(paramsDict.min) == 0 && parseInt(paramsDict.max) == 10) && paramsDict.min && paramsDict.max) {
+                q = query(q, where("difficulty", ">=", parseInt(paramsDict.min)), where("difficulty", "<=", parseInt(paramsDict.max)));
+            }
 
-                if (categoryTrueCount == 1) {
-                    q = query(q, where("category", "==", getKeyByValue(categoryDict, "true")));
-                }
-                else if (categoryTrueCount == 2) {
-                    q = query(q, where("category", "!=", getKeyByValue(categoryDict, "false")));
-                }
+            if (categoryTrueCount == 1) {
+                q = query(q, where("category", "==", getKeyByValue(categoryDict, "true")));
+            }
+            else if (categoryTrueCount == 2) {
+                q = query(q, where("category", "!=", getKeyByValue(categoryDict, "false")));
+            }
 
-                if (access != 0) {
-                    if (statusTrueCount == 1) {
-                        if (access == 1 && getKeyByValue(statusDict, "true") != "used") {
+            if (access != 0) {
+                if (statusTrueCount == 1) {
+                    if (access == 1 && getKeyByValue(statusDict, "true") != "used") {
+                        q = query(q, where("author", "==", user.uid));
+                    }
+                    q = query(q, where("status", "==", getKeyByValue(statusDict, "true")));
+                }
+                else if (statusTrueCount == 2) {
+                    if (access == 1) {
+                        if (getKeyByValue(statusDict, "false") == "used") {
                             q = query(q, where("author", "==", user.uid));
                         }
-                        q = query(q, where("status", "==", getKeyByValue(statusDict, "true")));
-                    }
-                    else if (statusTrueCount == 2) {
-                        if (access == 1) {
-                            if (getKeyByValue(statusDict, "false") == "used") {
-                                q = query(q, where("author", "==", user.uid));
-                            }
-                            else {
-                                q = query(q, or(where("status", "==", "used"), and(where("status", "==", getKeysByValue(statusDict, "true")[1]), where("author", "==", user.uid))));
-                            }
-                        }
                         else {
-                            q = query(q, where("status", "!=", getKeyByValue(statusDict, "false")));
+                            q = query(q, or(where("status", "==", "used"), and(where("status", "==", getKeysByValue(statusDict, "true")[1]), where("author", "==", user.uid))));
                         }
                     }
-                    else if (access == 1) {
-                        q = query(q, or(where("author", "==", user.uid), where("status", "==", "used")));
+                    else {
+                        q = query(q, where("status", "!=", getKeyByValue(statusDict, "false")));
                     }
                 }
-                q = query(q, orderBy(paramsDict.sort, paramsDict.sortdirection), limit(20));
+                else if (access == 1) {
+                    q = query(q, or(where("author", "==", user.uid), where("status", "==", "used")));
+                }
             }
+            if (paramsDict.sort) query(q, orderBy(paramsDict.sort, paramsDict.sortdirection));
+            query(q, limit(20));
             
             getDocs(q).then((querySnapshot) => {
     
