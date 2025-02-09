@@ -63,24 +63,26 @@ const sortSelect = document.getElementById('sort-select');
 const sortRadioAsc = document.getElementById('sort-radio-ascending');
 const sortRadioDesc = document.getElementById('sort-radio-descending');
 const searchbar = document.getElementById('searchbar');
-const filterSubmit = document.getElementById('filter-submit');
+const filterWrapper = document.getElementById('filter-wrapper');
 
 
-// filterSubmit.addEventListener('click', () => {
-//     const params = new URLSearchParams();
-//     params.append('min', slider.noUiSlider.get()[0]);
-//     params.append('max', slider.noUiSlider.get()[1]);
-//     params.append('algebra', algebraCheckbox.checked);
-//     params.append('geometry', geometryCheckbox.checked);
-//     params.append('numbertheory', numberTheoryCheckbox.checked);
-//     params.append('used', usedCheckbox.checked);
-//     params.append('open', openCheckbox.checked);
-//     params.append('active', activeCheckbox.checked);
-//     params.append('sort', sortSelect.value);
-//     params.append('sortdirection', document.querySelector(`input[name="sortdirection"]:checked`).value);
-//     params.append('keywords', searchbar.value);
-//     window.location.href = "?" + params.toString();
-// });
+filterWrapper.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const params = new URLSearchParams();
+    params.append('min', slider.noUiSlider.get()[0]);
+    params.append('max', slider.noUiSlider.get()[1]);
+    params.append('algebra', algebraCheckbox.checked);
+    params.append('geometry', geometryCheckbox.checked);
+    params.append('numbertheory', numberTheoryCheckbox.checked);
+    params.append('used', usedCheckbox.checked);
+    params.append('open', openCheckbox.checked);
+    params.append('active', activeCheckbox.checked);
+    params.append('sort', sortSelect.value);
+    params.append('sortdirection', document.querySelector(`input[name="sortdirection"]:checked`).value);
+    params.append('keywords', searchbar.value);
+    window.location.href = "?" + params.toString();
+});
 
 onAuthStateChanged(auth, (user) => {
     if (!user) {
@@ -613,8 +615,10 @@ onAuthStateChanged(auth, (user) => {
             openCheckbox.checked = paramsDict.open === "true";
             activeCheckbox.checked = paramsDict.active === "true";
             if (paramsDict.sort) sortSelect.value = paramsDict.sort;
-            sortRadioAsc.checked = paramsDict.sortdirection === "asc";
-            sortRadioDesc.checked = paramsDict.sortdirection === "desc";
+            if (paramsDict.sortdirection) {
+                sortRadioAsc.checked = paramsDict.sortdirection === "asc";
+                sortRadioDesc.checked = paramsDict.sortdirection === "desc";
+            }
             if (paramsDict.keywords) searchbar.value = paramsDict.keywords;
 
             if (paramsDict.keywords && paramsDict != "") {
@@ -656,7 +660,8 @@ onAuthStateChanged(auth, (user) => {
                     q = query(q, or(where("author", "==", user.uid), where("status", "==", "used")));
                 }
             }
-            if (paramsDict.sort) query(q, orderBy(paramsDict.sort, paramsDict.sortdirection));
+            
+            query(q, orderBy(paramsDict.sort, paramsDict.sortdirection));
             query(q, limit(20));
             
             getDocs(q).then((querySnapshot) => {
