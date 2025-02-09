@@ -72,12 +72,12 @@ filterWrapper.addEventListener('submit', (e) => {
     const params = new URLSearchParams();
     params.append('min', slider.noUiSlider.get()[0]);
     params.append('max', slider.noUiSlider.get()[1]);
-    params.append('algebra', algebraCheckbox.checked);
-    params.append('geometry', geometryCheckbox.checked);
-    params.append('numbertheory', numberTheoryCheckbox.checked);
-    params.append('used', usedCheckbox.checked);
-    params.append('open', openCheckbox.checked);
-    params.append('active', activeCheckbox.checked);
+    if (algebraCheckbox.checked) params.append('algebra', "true");
+    if (geometryCheckbox.checked) params.append('geometry', "true");
+    if (numberTheoryCheckbox.checked) params.append('numbertheory', "true");
+    if (usedCheckbox.checked) params.append('used', "true");
+    if (openCheckbox.checked) params.append('open', "true");
+    if (activeCheckbox.checked) params.append('active', "true");
     params.append('sort', sortSelect.value);
     params.append('sortdirection', document.querySelector(`input[name="sortdirection"]:checked`).value);
     params.append('keywords', searchbar.value);
@@ -633,7 +633,7 @@ onAuthStateChanged(auth, (user) => {
                 q = query(q, where("category", "==", getKeyByValue(categoryDict, "true")));
             }
             else if (categoryTrueCount == 2) {
-                q = query(q, where("category", "!=", getKeyByValue(categoryDict, "false")));
+                q = query(q, where("category", "!=", getKeyByValue(categoryDict, undefined)));
             }
 
             if (access != 0) {
@@ -645,7 +645,7 @@ onAuthStateChanged(auth, (user) => {
                 }
                 else if (statusTrueCount == 2) {
                     if (access == 1) {
-                        if (getKeyByValue(statusDict, "false") == "used") {
+                        if (getKeyByValue(statusDict, undefined) == "used") {
                             q = query(q, where("author", "==", user.uid));
                         }
                         else {
@@ -653,16 +653,15 @@ onAuthStateChanged(auth, (user) => {
                         }
                     }
                     else {
-                        q = query(q, where("status", "!=", getKeyByValue(statusDict, "false")));
+                        q = query(q, where("status", "!=", getKeyByValue(statusDict, undefined)));
                     }
                 }
                 else if (access == 1) {
                     q = query(q, or(where("author", "==", user.uid), where("status", "==", "used")));
                 }
             }
-            
-            query(q, orderBy(paramsDict.sort, paramsDict.sortdirection));
-            query(q, limit(20));
+            if (paramsDict.sort && paramsDict.sortdirection) q = query(q, orderBy(paramsDict.sort, paramsDict.sortdirection));
+            q = query(q, limit(20));
             
             getDocs(q).then((querySnapshot) => {
     

@@ -31,12 +31,13 @@ onAuthStateChanged(auth, (user) => {
 // Basic validation
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
-const logIn = document.getElementById("submit");
+const logInForm = document.getElementById("log-in-form");
 const errorMessageElement = document.getElementById("error-message");
 
 const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-logIn.addEventListener("click", () => {
+logInForm.addEventListener("submit", (e) => {
+    e.preventDefault();
     errorMessageElement.textContent = '';
 
     if (!(emailInput.value.length != 0 && emailRegExp.test(emailInput.value))) {

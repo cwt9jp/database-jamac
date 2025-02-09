@@ -36,13 +36,14 @@ const emailInput = document.getElementById("email");
 const nameInput = document.getElementById("display-name");
 const initialPassword = document.getElementById("password-initial");
 const finalPassword = document.getElementById("password-final");
-const signUp = document.getElementById("submit");
+const signUpForm = document.getElementById("sign-up-form");
 const errorMessageElement = document.getElementById("error-message");
 
 const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 
-signUp.addEventListener("click", () => {
+signUpForm.addEventListener("submit", (e) => {
+    e.preventDefault();
     errorMessageElement.textContent = "";
 
     if (!(emailInput.value.length != 0 && emailRegExp.test(emailInput.value))) {
