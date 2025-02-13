@@ -15,10 +15,9 @@ header {
 main {
     display: block;
     margin: 20px auto;
-    width: min(40vw, 400px);
-    padding: 25px;
+    width: min(100vw, 400px);
+    padding: 0;
     text-align: center;
-    
 }
 
 form h1 {
@@ -30,7 +29,7 @@ button,
 input,
 select,
 textarea {
-    width: min(25vw, 250px);
+    width: min(50vw, 250px);
 }
 
 input {
@@ -111,7 +110,8 @@ button:active {
     align-items: center;
     text-align: center;
     margin-block: 20px;
-  }
+    width: 100%;
+}
 
 .separator::before,
 .separator::after {

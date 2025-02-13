@@ -4,7 +4,7 @@ labels.forEach(function(lbl) {
     const input = document.getElementById(lbl.htmlFor);
 
     if (input) {
-        input.addEventListener("blur", function() {
+        input.addEventListener("blur", () => {
             if (input.value) {
                 lbl.classList.add("entered");
             }

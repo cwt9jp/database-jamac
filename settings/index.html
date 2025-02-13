@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DJP - Account settings</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
+
+        <link type="text/css" rel="stylesheet" href="/src/styles/default.css" />
+
+        <script type="module" src="/src/scripts/default.js"></script>
+        <script type="module" src="/src/scripts/settings.js"></script>
+
+        <link rel="icon" href="/src/images/icon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <div class="left">
+                    <a href="/"><img src="/src/images/djp-logo.svg" alt="DJP Logo" /></a>
+                    <a href="/data/" id="database-link" class="hidden login-element">Database</a> 
+                    <a href="/" id="guide-link" class="hidden login-element">Guide</a>
+                </div>
+
+                <div id="button-wrapper" class="hidden">
+                    <a id="log-in-button" href="/log-in/">Log in</a>
+                    <a id="sign-up-button" href="/sign-up/">Sign up</a>
+                </div>
+
+                <button type="button" id="account-button" class="hidden login-element"></button>
+                <div id="button-dropdown" class="hidden" tabindex="-1">
+                    <a id="account-settings" href="/settings/">Account settings</a>
+                    <button type="button" id="sign-out">Sign out</button>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <h1>Account settings</h1>
+        </main>
+        <footer>
+            <p>
+                &copy; 2024 Albemarle Math Club. Use of problems is allowed under the <a target="_blank" rel="noopener" href="https://opensource.org/license/mit">MIT License</a>.
+            </p>
+        </footer>
+    </body>
+</html>

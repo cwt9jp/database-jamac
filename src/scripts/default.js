@@ -1,7 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { getFirestore, connectFirestoreEmulator,  setDoc, doc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
@@ -14,7 +12,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 const auth = getAuth();
 auth.useDeviceLanguage();
@@ -45,7 +42,6 @@ onAuthStateChanged(auth, (user) => {
         guideLink.classList.remove("hidden");
     } else {
         // User is signed out
-        console.log("signed out");
         buttonWrapper.classList.remove("hidden");
     }
 });
@@ -73,7 +69,7 @@ function showDropDown(e){
      };
 }
 
-function hideDropDown(){
+function hideDropDown() {
     document.onclick = function(){};
     buttonDropdown.classList.add("hidden");
     accountButton.onclick = showDropDown;
