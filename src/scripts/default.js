@@ -47,7 +47,6 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // Dropdown
-
 accountButton.onclick = showDropDown;
 
 function showDropDown(e){

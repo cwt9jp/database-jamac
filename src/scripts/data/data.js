@@ -18,6 +18,7 @@ Data has thirteen fields:
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getFirestore, collection, query, where, getDocs, getDoc, doc, or, and, addDoc, serverTimestamp, limit, orderBy, startAfter, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
 const firebaseConfig = {
     apiKey: "AIzaSyDStaGeZHAUMDsO-zkUSkibpboZLwwMMs8",
     authDomain: "database-jamac.firebaseapp.com",

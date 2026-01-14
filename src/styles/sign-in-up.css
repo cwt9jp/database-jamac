@@ -4,6 +4,7 @@ header {
     display: flex;
     justify-content: center;
     border-bottom: none;
+    position: initial;
 }
 
 #logo img {
