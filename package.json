@@ -4,12 +4,27 @@
   "description": "JAMAC question database.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode=production",
+    "start": "webpack serve --mode=development"
   },
   "keywords": [],
   "author": "Albemarle High School Math Club",
   "license": "MIT",
   "dependencies": {
-    "firebase": "^11.0.2"
+    "firebase": "^11.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cwt9jp/database-jamac.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cwt9jp/database-jamac/issues"
+  },
+  "homepage": "https://github.com/cwt9jp/database-jamac#README",
+  "devDependencies": {
+    "webpack": "^5.104.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.3"
   }
 }
